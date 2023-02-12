@@ -4,12 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dabi.dabi.data.remote.feed.FeedRemoteDataSource
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeViewModel : ViewModel() {
-    val datasource = FeedRemoteDataSource()
+class HomeViewModel @Inject constructor(private val dataSource: FeedRemoteDataSource) :
+    ViewModel() {
+
     fun getPagingFeed() {
         viewModelScope.launch {
-            val data = datasource.getPaging()
+            val data = dataSource.getPaging()
             println(data)
         }
     }

@@ -13,6 +13,3 @@ interface FeedService {
         @Query("is_valid") is_valid: Boolean = true
     ): PagingResponse<Feed>
 }
-
-
-val feedService = Network.retrofit.create(FeedService::class.java)

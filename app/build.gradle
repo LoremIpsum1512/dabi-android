@@ -25,13 +25,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    buildFeatures {
+        dataBinding true
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+
 }
 
 dependencies {
@@ -54,4 +62,8 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$ktx_version"
     implementation "androidx.fragment:fragment-ktx:1.5.5"
     implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
+
+    def dagger_version = '2.45'
+    implementation "com.google.dagger:dagger:$dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
 }
