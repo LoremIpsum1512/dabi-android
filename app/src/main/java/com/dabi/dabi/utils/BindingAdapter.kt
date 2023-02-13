@@ -1,5 +1,6 @@
 package com.dabi.dabi.utils
 
+import android.graphics.drawable.ColorDrawable
 import android.widget.ImageView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
@@ -11,9 +12,16 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
     imgUrl?.let {
         imgUrl.let {
             val imgUri = imgUrl.toUri().buildUpon().scheme("https").build()
-            imgView.load(imgUri){
+            imgView.load(imgUri) {
 
-                placeholder(R.drawable.ic_launcher_background)
+                placeholder(
+                    ColorDrawable(
+                        imgView.resources.getColor(
+                            R.color.bg_gray,
+                            imgView.context.theme
+                        )
+                    )
+                )
             }
         }
     }

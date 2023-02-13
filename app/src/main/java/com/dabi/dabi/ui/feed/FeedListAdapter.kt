@@ -3,9 +3,11 @@ package com.dabi.dabi.ui.feed
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.dabi.dabi.R
 import com.dabi.dabi.databinding.FeedListItemBinding
 import com.dabi.dabi.model.Feed
 
@@ -33,7 +35,12 @@ class FeedListAdapter : PagingDataAdapter<Feed, FeedListAdapter.ViewHolder>(Diff
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
-            FeedListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            DataBindingUtil.inflate<FeedListItemBinding>(
+                LayoutInflater.from(parent.context),
+                R.layout.feed_list_item,
+                parent,
+                false
+            )
         return ViewHolder(binding)
     }
 
