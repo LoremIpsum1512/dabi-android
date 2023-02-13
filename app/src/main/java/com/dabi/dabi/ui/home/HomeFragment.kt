@@ -7,9 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.GridLayoutManager
 import com.dabi.dabi.MainActivity
 import com.dabi.dabi.databinding.FragmentHomeBinding
+import com.dabi.dabi.ui.feed.FeedListAdapter
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -33,12 +40,24 @@ class HomeFragment : Fragment() {
         val binding = FragmentHomeBinding.inflate(
             inflater
         )
+
+        bindList(binding)
         return binding.root
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.getPagingFeed()
-    }
+    private fun bindList(binding: FragmentHomeBinding) {
+        val adapter = FeedListAdapter()
+        binding.feedList.adapter = adapter
+        binding.feedList.layoutManager = GridLayoutManager(
+            context, 2
+        )
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.feedFlow.collectLatest { pagingData ->
+                    adapter.submitData(pagingData)
+                }
+            }
+        }
 
+    }
 }

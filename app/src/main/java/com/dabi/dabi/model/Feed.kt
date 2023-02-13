@@ -24,7 +24,7 @@ enum class MediaType(val value: Int) {
 @JsonClass(generateAdapter = true)
 data class Feed(
     val pk: Int,
-    val thumbnail_image: String,
+    @Json(name = "thumbnail_image") val thumbnailImage: String,
     val images: List<String>?,
     @Json(name = "post_description") val postDescription: String,
      @Json(name = "media_type") val mediaType: MediaType,

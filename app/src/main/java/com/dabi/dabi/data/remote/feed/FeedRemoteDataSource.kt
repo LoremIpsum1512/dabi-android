@@ -5,7 +5,7 @@ import com.dabi.dabi.model.PagingResponse
 import javax.inject.Inject
 
 class FeedRemoteDataSource @Inject constructor(private val feedService: FeedService) {
-    suspend fun getPaging(): PagingResponse<Feed> {
-        return feedService.getPagingFeed(0)
+    suspend fun getPaging(offset: Int): PagingResponse<Feed> {
+        return feedService.getPagingFeed(offset)
     }
 }
