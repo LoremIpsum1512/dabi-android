@@ -11,7 +11,8 @@ import com.dabi.dabi.R
 import com.dabi.dabi.databinding.FeedListItemBinding
 import com.dabi.dabi.model.Feed
 
-class FeedListAdapter : PagingDataAdapter<Feed, FeedListAdapter.ViewHolder>(DiffCallback) {
+class FeedListAdapter(val clickEvent: FeedClickEvent) :
+    PagingDataAdapter<Feed, FeedListAdapter.ViewHolder>(DiffCallback) {
 
     companion object DiffCallback : DiffUtil.ItemCallback<Feed>() {
         override fun areItemsTheSame(oldItem: Feed, newItem: Feed): Boolean {
@@ -24,11 +25,16 @@ class FeedListAdapter : PagingDataAdapter<Feed, FeedListAdapter.ViewHolder>(Diff
 
     }
 
-    class ViewHolder(private val binding: FeedListItemBinding) :
+    class ViewHolder(
+        private val binding: FeedListItemBinding,
+        private val clickEvent: FeedClickEvent
+    ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(feed: Feed) {
+            binding.feedListItem.setOnClickListener { clickEvent.onClick(feed.pk) }
             binding.apply {
                 binding.feed = feed
+
             }
         }
     }
@@ -41,7 +47,7 @@ class FeedListAdapter : PagingDataAdapter<Feed, FeedListAdapter.ViewHolder>(Diff
                 parent,
                 false
             )
-        return ViewHolder(binding)
+        return ViewHolder(binding, clickEvent)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -49,4 +55,8 @@ class FeedListAdapter : PagingDataAdapter<Feed, FeedListAdapter.ViewHolder>(Diff
         if (feed != null)
             holder.bind(feed)
     }
+}
+
+class FeedClickEvent(val callback: (feedId: Int) -> Unit) {
+    fun onClick(feedId: Int) = callback(feedId)
 }
