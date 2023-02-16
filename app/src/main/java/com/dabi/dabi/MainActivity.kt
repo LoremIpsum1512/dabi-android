@@ -20,39 +20,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         appComponent = (application as DabiApplication).appComponent
         binding =
-            DataBindingUtil.setContentView<ActivityMainBinding>(
+            DataBindingUtil.setContentView(
                 this, R.layout.activity_main
             )
-
-        setupBottomNav()
-
-    }
-
-    private fun setupBottomNav() {
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-
-        val navController = navHostFragment.navController
-        val bottomNav = binding.bottomNavView
-
-        NavigationUI.setupWithNavController(bottomNav, navController)
-
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            when (destination.id) {
-                R.id.homeFragment -> showBottomNav(bottomNav)
-                R.id.searchFragment -> showBottomNav(bottomNav)
-                else -> hideBottomNav(bottomNav)
-            }
-        }
-    }
-
-    private fun showBottomNav(bottomNav: BottomNavigationView) {
-        bottomNav.visibility = View.VISIBLE
-
-    }
-
-    private fun hideBottomNav(bottomNav: BottomNavigationView) {
-        bottomNav.visibility = View.INVISIBLE
-
     }
 }

@@ -12,15 +12,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.dabi.dabi.MainActivity
 import com.dabi.dabi.R
 import com.dabi.dabi.databinding.FragmentHomeBinding
-import com.dabi.dabi.ui.feed.FeedClickEvent
-import com.dabi.dabi.ui.feed.FeedDetailFragment
-import com.dabi.dabi.ui.feed.FeedItemDecoration
-import com.dabi.dabi.ui.feed.FeedListAdapter
+import com.dabi.dabi.ui.feed.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -52,10 +50,13 @@ class HomeFragment : Fragment() {
     }
 
     private fun bindList(binding: FragmentHomeBinding) {
+        val mainNavController =
+            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
+
         val adapter = FeedListAdapter(
             FeedClickEvent { feedId ->
-                findNavController().navigate(
-                    HomeFragmentDirections.actionHomeFragmentToFeedDetailFragment(
+                mainNavController.navigate(
+                    FeedDetailFragmentDirections.actionGlobalFeedDetailFragment(
                         feedId
                     )
                 )
