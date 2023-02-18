@@ -11,7 +11,7 @@ import com.dabi.dabi.R
 import com.dabi.dabi.databinding.FeedListItemBinding
 import com.dabi.dabi.model.Feed
 
-class FeedListAdapter(val clickEvent: FeedClickEvent) :
+class FeedListAdapter(private val clickEvent: FeedClickEvent) :
     PagingDataAdapter<Feed, FeedListAdapter.ViewHolder>(DiffCallback) {
 
     companion object DiffCallback : DiffUtil.ItemCallback<Feed>() {
@@ -20,7 +20,7 @@ class FeedListAdapter(val clickEvent: FeedClickEvent) :
         }
 
         override fun areContentsTheSame(oldItem: Feed, newItem: Feed): Boolean {
-            return oldItem.thumbnailImage == newItem.thumbnailImage
+            return oldItem.pk == newItem.pk
         }
 
     }

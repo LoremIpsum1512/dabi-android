@@ -7,6 +7,7 @@ import com.dabi.dabi.model.Feed
 
 class FeedPagingSource(
     private val dataSource: FeedRemoteDataSource,
+    private val style:String?,
 ) : PagingSource<Int, Feed>() {
 
     override fun getRefreshKey(state: PagingState<Int, Feed>): Int? {
@@ -19,7 +20,7 @@ class FeedPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Feed> {
         return try {
             val nextPageNumber = params.key ?: 0
-            val response = dataSource.getPaging(nextPageNumber)
+            val response = dataSource.getPaging(nextPageNumber,style)
             LoadResult.Page(
                 data = response.results,
                 prevKey = null,

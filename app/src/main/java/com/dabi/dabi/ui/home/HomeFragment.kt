@@ -13,12 +13,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.dabi.dabi.MainActivity
 import com.dabi.dabi.R
 import com.dabi.dabi.databinding.FragmentHomeBinding
-import com.dabi.dabi.ui.feed.*
+import com.dabi.dabi.ui.feed.FeedClickEvent
+import com.dabi.dabi.ui.feed.FeedDetailFragmentDirections
+import com.dabi.dabi.ui.feed.FeedItemDecoration
+import com.dabi.dabi.ui.feed.FeedListAdapter
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,7 +29,6 @@ import javax.inject.Inject
 class HomeFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-
     private val viewModel: HomeViewModel by viewModels {
         viewModelFactory
     }
@@ -37,15 +38,19 @@ class HomeFragment : Fragment() {
         (activity as MainActivity).appComponent.inject(this)
     }
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentHomeBinding.inflate(
-            inflater
+            inflater, container, false
         )
 
         bindList(binding)
+        binding.feedFilterButton.setOnClickListener {
+            viewModel.applyStyle()
+        }
         return binding.root
     }
 
