@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.dabi.dabi.model
+package com.dabi.dabi.data
 
 data class Resource<out T>(val status: Status, val data: T?, val message: String?) {
     companion object {

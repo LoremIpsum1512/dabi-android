@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.dabi.dabi.R
 import com.dabi.dabi.databinding.FeedListItemBinding
-import com.dabi.dabi.model.Feed
+import com.dabi.dabi.data.Feed
 
 class FeedListAdapter(private val clickEvent: FeedClickEvent) :
     PagingDataAdapter<Feed, FeedListAdapter.ViewHolder>(DiffCallback) {

@@ -1,4 +1,4 @@
-package com.dabi.dabi.model
+package com.dabi.dabi.data
 
 data class PagingResponse<T>(
     val next:String?,

@@ -18,7 +18,7 @@ package com.dabi.dabi.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.dabi.dabi.ui.home.HomeViewModel
+import com.dabi.dabi.viewmodels.HomeViewModel
 
 import dagger.Binds
 import dagger.Module

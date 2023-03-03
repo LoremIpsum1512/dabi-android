@@ -1,7 +1,7 @@
 package com.dabi.dabi.di
 
 import android.content.Context
-import com.dabi.dabi.ui.home.HomeFragment
+import com.dabi.dabi.HomeFragment
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton

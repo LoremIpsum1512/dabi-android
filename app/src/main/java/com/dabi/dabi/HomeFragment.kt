@@ -1,6 +1,7 @@
-package com.dabi.dabi.ui.home
+package com.dabi.dabi
 
 
+import FeedListLoadStateAdapter
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,13 +15,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
-import com.dabi.dabi.MainActivity
-import com.dabi.dabi.R
 import com.dabi.dabi.databinding.FragmentHomeBinding
 import com.dabi.dabi.ui.feed.FeedClickEvent
-import com.dabi.dabi.ui.feed.FeedDetailFragmentDirections
-import com.dabi.dabi.ui.feed.FeedItemDecoration
+import com.dabi.dabi.views.FeedItemDecoration
 import com.dabi.dabi.ui.feed.FeedListAdapter
+import com.dabi.dabi.viewmodels.HomeViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -48,9 +47,7 @@ class HomeFragment : Fragment() {
         )
 
         bindList(binding)
-        binding.feedFilterButton.setOnClickListener {
-            viewModel.applyStyle()
-        }
+
         return binding.root
     }
 
@@ -67,11 +64,25 @@ class HomeFragment : Fragment() {
                 )
             }
         )
+
+        val gridLayout = GridLayoutManager(
+            context, 2
+        )
+        val loadStateAdapter = FeedListLoadStateAdapter(retry = adapter::retry)
+
+        gridLayout.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return if (position == adapter.itemCount && loadStateAdapter.itemCount > 0) {
+                    2
+                } else {
+                    1
+                }
+            }
+        }
+
         binding.feedList.apply {
-            this.adapter = adapter
-            this.layoutManager = GridLayoutManager(
-                context, 2
-            )
+            this.adapter = adapter.withLoadStateFooter(loadStateAdapter)
+            this.layoutManager = gridLayout
             val spacingInPixels = resources.getDimensionPixelSize(R.dimen.feed_item_spacing)
             this.addItemDecoration(
                 FeedItemDecoration(
@@ -82,9 +93,13 @@ class HomeFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.feedFlow.collectLatest { pagingData ->
-                    adapter.submitData(pagingData)
+                launch {
+                    viewModel.feedFlow.collectLatest { pagingData ->
+                        adapter.submitData(pagingData)
+                    }
                 }
+
+
             }
         }
 

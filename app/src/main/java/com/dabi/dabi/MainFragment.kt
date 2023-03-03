@@ -1,12 +1,10 @@
-package com.dabi.dabi.ui.main
+package com.dabi.dabi
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.dabi.dabi.R
@@ -27,7 +25,8 @@ class MainFragment : Fragment() {
     }
 
     private fun setupBottomNav() {
-        val nestedNavHostFragment = childFragmentManager.findFragmentById(R.id.bottom_nav_host_fragment)
+        val nestedNavHostFragment =
+            childFragmentManager.findFragmentById(R.id.bottom_nav_host_fragment)
         val navController = nestedNavHostFragment?.findNavController()
         val bottomNav = binding.bottomNavView
         if (navController != null)

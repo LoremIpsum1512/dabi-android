@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.dabi.dabi.model
+package com.dabi.dabi.data
 
 /**
  * Status of a resource that is provided to the UI.

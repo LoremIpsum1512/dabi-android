@@ -7,7 +7,7 @@
     <include app:graph="@navigation/bottom_nav_graph" />
     <fragment
         android:id="@+id/feedDetailFragment"
-        android:name="com.dabi.dabi.ui.feed.FeedDetailFragment"
+        android:name="com.dabi.dabi.FeedDetailFragment"
         android:label="fragment_feed_detail"
         tools:layout="@layout/fragment_feed_detail" >
         <argument
@@ -17,7 +17,7 @@
     <action android:id="@+id/action_global_feedDetailFragment" app:destination="@id/feedDetailFragment" />
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.dabi.dabi.ui.main.MainFragment"
+        android:name="com.dabi.dabi.MainFragment"
         android:label="MainFragment"
         tools:layout="@layout/fragment_main"/>
 </navigation>
