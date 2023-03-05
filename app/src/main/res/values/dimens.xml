@@ -2,4 +2,5 @@
 <resources>
     <dimen name="feed_item_spacing">8dp</dimen>
     <dimen name="bottom_nav_height">56dp</dimen>
+    <dimen name="feed_item_height">300dp</dimen>
 </resources>

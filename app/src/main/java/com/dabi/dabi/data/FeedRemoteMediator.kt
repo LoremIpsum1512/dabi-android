@@ -9,6 +9,7 @@ import androidx.room.withTransaction
 import com.dabi.dabi.data.local.AppDatabase
 import com.dabi.dabi.api.FeedService
 import com.dabi.dabi.utils.PAGING_LIMIT
+import kotlinx.coroutines.delay
 import timber.log.Timber
 
 @OptIn(ExperimentalPagingApi::class)
@@ -37,7 +38,9 @@ class FeedRemoteMediator(
                 nextKey
             }
         }
-        Timber.v("load: {$loadType}")
+
+        val listCount  = count(state)
+        Timber.v("load: {$loadType} count: {$listCount}")
         try {
             val response = feedService.getPagingFeed(
                 offset = offset
@@ -78,6 +81,12 @@ class FeedRemoteMediator(
         return state.pages.lastOrNull {
             it.data.isNotEmpty()
         }?.data?.lastOrNull()?.let { feed -> remoteKeyDao.remoteKeyBy(id = feed.pk) }
+    }
+
+    private fun count(state: PagingState<Int, Feed>) : Int{
+       return state.pages.fold(0) { acc, curr ->
+            curr.data.size + acc
+        }
     }
 
     private suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, Feed>): FeedRemoteKey? {

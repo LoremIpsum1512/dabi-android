@@ -7,6 +7,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.BaseAdapter
+import android.widget.SimpleAdapter
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -14,7 +18,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.Navigation
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
+import com.dabi.dabi.adapters.FeedListPlaceholderAdapter
 import com.dabi.dabi.databinding.FragmentHomeBinding
 import com.dabi.dabi.ui.feed.FeedClickEvent
 import com.dabi.dabi.views.FeedItemDecoration
@@ -45,13 +51,15 @@ class HomeFragment : Fragment() {
         val binding = FragmentHomeBinding.inflate(
             inflater, container, false
         )
+        container?.let {
+            bindList(binding, it.context)
+        }
 
-        bindList(binding)
 
         return binding.root
     }
 
-    private fun bindList(binding: FragmentHomeBinding) {
+    private fun bindList(binding: FragmentHomeBinding, context: Context) {
         val mainNavController =
             Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
 
@@ -91,6 +99,10 @@ class HomeFragment : Fragment() {
             )
         }
 
+        binding.feedListPlaceholder.adapter = FeedListPlaceholderAdapter(
+            Array(6) { i -> i }
+        )
+
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
@@ -98,8 +110,15 @@ class HomeFragment : Fragment() {
                         adapter.submitData(pagingData)
                     }
                 }
+                launch {
+                    adapter.loadStateFlow.collectLatest { loadStates ->
+                        binding.feedListPlaceholder.isVisible =
+                            loadStates.refresh is LoadState.Loading
+                        binding.feedList.isVisible =
+                            loadStates.refresh is LoadState.NotLoading
 
-
+                    }
+                }
             }
         }
 
