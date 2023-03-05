@@ -8,7 +8,7 @@ import androidx.room.Query
 
 @Dao
 interface FeedDao {
-    @Query("SELECT * FROM feeds ORDER BY createdAt DESC")
+    @Query("SELECT * FROM feeds ORDER BY fetchedOrder ASC")
     fun pagingSource(): PagingSource<Int, Feed>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

@@ -10,7 +10,7 @@ import com.dabi.dabi.data.Feed
 import com.dabi.dabi.data.FeedRemoteKey
 import com.dabi.dabi.data.StringListConverter
 
-@Database(entities = [Feed::class, FeedRemoteKey::class], version = 2)
+@Database(entities = [Feed::class, FeedRemoteKey::class], version = 3)
 @TypeConverters(StringListConverter::class, DateStringConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun feedDao(): FeedDao

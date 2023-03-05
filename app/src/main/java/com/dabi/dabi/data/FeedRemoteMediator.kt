@@ -39,13 +39,15 @@ class FeedRemoteMediator(
             }
         }
 
-        val listCount  = count(state)
+        val listCount = count(state)
         Timber.v("load: {$loadType} count: {$listCount}")
         try {
             val response = feedService.getPagingFeed(
                 offset = offset
             )
-            val feeds = response.results
+            val feeds = response.results.mapIndexed { index, feed ->
+                feed.copy(fetchedOrder = index + offset)
+            }
             val endReached = response.next == null
             database.withTransaction {
                 if (loadType == LoadType.REFRESH) {
@@ -83,8 +85,8 @@ class FeedRemoteMediator(
         }?.data?.lastOrNull()?.let { feed -> remoteKeyDao.remoteKeyBy(id = feed.pk) }
     }
 
-    private fun count(state: PagingState<Int, Feed>) : Int{
-       return state.pages.fold(0) { acc, curr ->
+    private fun count(state: PagingState<Int, Feed>): Int {
+        return state.pages.fold(0) { acc, curr ->
             curr.data.size + acc
         }
     }

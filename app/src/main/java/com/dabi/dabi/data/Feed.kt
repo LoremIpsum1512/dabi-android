@@ -33,6 +33,7 @@ data class Feed(
     @Json(name = "post_description") val postDescription: String,
     @Json(name = "media_type") val mediaType: MediaType,
     @Json(name = "created_at") val createdAt: Date,
+    val fetchedOrder: Int?,
     val video: String?,
 )
 
