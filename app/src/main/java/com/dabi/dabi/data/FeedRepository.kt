@@ -23,9 +23,7 @@ class FeedRepository @Inject constructor(
     @OptIn(ExperimentalPagingApi::class)
     fun getFeedPagingDataStream(): Flow<PagingData<Feed>> {
         val pagingSourceFactory = {
-
             feedDao.pagingSource()
-
         }
         return Pager(
             config = PagingConfig(pageSize = 20),

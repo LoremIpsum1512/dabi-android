@@ -3,4 +3,10 @@
     <dimen name="feed_item_spacing">8dp</dimen>
     <dimen name="bottom_nav_height">56dp</dimen>
     <dimen name="feed_item_height">300dp</dimen>
+
+    <dimen name="spacing_xs">4dp</dimen>
+    <dimen name="spacing_s">8dp</dimen>
+    <dimen name="spacing_md">12dp</dimen>
+    <dimen name="spacing_lg">16dp</dimen>
+    <dimen name="spacing_xl">24</dimen>
 </resources>

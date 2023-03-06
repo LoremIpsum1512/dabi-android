@@ -12,10 +12,10 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/component_gray</item>
         <!-- Customize your theme here. -->
-        <item name="android:fontFamily">@font/nunito_sans</item>
-        <item name="fontFamily">@font/nunito_sans</item>
         <item name="android:textViewStyle">@style/TextAppearance.Body</item>
+        <item name="materialButtonStyle">@style/DefaultButton</item>
     </style>
+
 
 
 </resources>
