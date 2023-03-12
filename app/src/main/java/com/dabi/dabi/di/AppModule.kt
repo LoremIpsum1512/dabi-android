@@ -11,7 +11,10 @@ import dagger.Provides
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
-@Module(includes = [NetworkModule::class, ViewModelModule::class])
+@Module(
+    includes = [NetworkModule::class, ViewModelModule::class],
+    subcomponents = [HomeComponent::class, FeedDetailComponent::class]
+)
 class AppModule {
 
     @Singleton

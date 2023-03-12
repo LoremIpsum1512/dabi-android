@@ -12,12 +12,11 @@ import javax.inject.Singleton
 
 @Singleton
 class FeedRepository @Inject constructor(
-    private val feedRemoteDataSource: FeedRemoteDataSource,
     private val feedService: FeedService,
     private val database: AppDatabase,
     private val feedDao: FeedDao,
     private val feedRemoteKeyDao: FeedRemoteKeyDao
-) {
+)  {
 
 
     @OptIn(ExperimentalPagingApi::class)
@@ -36,4 +35,5 @@ class FeedRepository @Inject constructor(
             pagingSourceFactory = pagingSourceFactory
         ).flow
     }
+
 }

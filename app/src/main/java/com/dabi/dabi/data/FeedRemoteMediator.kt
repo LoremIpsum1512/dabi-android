@@ -1,6 +1,5 @@
 package com.dabi.dabi.data
 
-import android.os.Handler
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -9,7 +8,6 @@ import androidx.room.withTransaction
 import com.dabi.dabi.data.local.AppDatabase
 import com.dabi.dabi.api.FeedService
 import com.dabi.dabi.utils.PAGING_LIMIT
-import kotlinx.coroutines.delay
 import timber.log.Timber
 
 @OptIn(ExperimentalPagingApi::class)

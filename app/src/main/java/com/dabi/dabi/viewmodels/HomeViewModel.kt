@@ -4,13 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.dabi.dabi.data.Feed
-import com.dabi.dabi.data.StyleType
-import com.dabi.dabi.data.FeedRepository
+import com.dabi.dabi.data.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
 
 class HomeViewModel @Inject constructor(private val feedRepository: FeedRepository) :
     ViewModel() {

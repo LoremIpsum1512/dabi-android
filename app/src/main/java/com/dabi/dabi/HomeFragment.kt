@@ -7,9 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.BaseAdapter
-import android.widget.SimpleAdapter
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -40,7 +38,8 @@ class HomeFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (activity as MainActivity).appComponent.inject(this)
+        // (activity as MainActivity).appComponent.inject(this)
+        (activity as MainActivity).homeComponent.inject(this)
     }
 
 
@@ -53,9 +52,10 @@ class HomeFragment : Fragment() {
         )
         container?.let {
             bindList(binding, it.context)
+            childFragmentManager.beginTransaction()
+                .add(R.id.fragment_container_view, EmptyFragment())
+                .commit()
         }
-
-
         return binding.root
     }
 
@@ -114,9 +114,19 @@ class HomeFragment : Fragment() {
                     adapter.loadStateFlow.collectLatest { loadStates ->
                         binding.feedListPlaceholder.isVisible =
                             loadStates.refresh is LoadState.Loading
-                        binding.feedList.isVisible =
-                            loadStates.refresh is LoadState.NotLoading
-
+                        binding.feedList.isVisible = loadStates.refresh is LoadState.NotLoading
+                        binding.fragmentContainerView.isVisible =
+                            loadStates.refresh is LoadState.Error
+                        if (loadStates.refresh is LoadState.Error) {
+                            val parcel =
+                                EmptyFragmentParcelable.fromException(
+                                    (loadStates.refresh as LoadState.Error).error
+                                )
+                            requireActivity().supportFragmentManager.setFragmentResult(
+                                EmptyFragment.requestKey,
+                                bundleOf(EmptyFragment.argsKey to parcel)
+                            )
+                        }
                     }
                 }
             }
