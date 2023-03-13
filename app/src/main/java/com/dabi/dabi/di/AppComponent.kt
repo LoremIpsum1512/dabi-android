@@ -1,6 +1,7 @@
 package com.dabi.dabi.di
 
 import android.content.Context
+import com.dabi.dabi.FeedListFragment
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -16,5 +17,7 @@ interface AppComponent {
 
     fun homeComponent(): HomeComponent.Factory
 
-    fun feedComponent() : FeedDetailComponent.Factory
+    fun feedComponent(): FeedDetailComponent.Factory
+
+    fun inject(feedListFragment: FeedListFragment)
 }

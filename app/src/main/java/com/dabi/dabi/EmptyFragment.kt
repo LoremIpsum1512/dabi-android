@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import com.dabi.dabi.data.HandledException
 import com.dabi.dabi.databinding.FragmentErrorBinding
 import kotlinx.android.parcel.Parcelize
@@ -30,10 +31,8 @@ class EmptyFragment : Fragment() {
             container,
             false
         )
-
-        requireActivity().supportFragmentManager.setFragmentResultListener(
-            requestKey,
-            viewLifecycleOwner
+        setFragmentResultListener(
+            requestKey
         ) { _, bundle ->
             val parcel = when {
                 SDK_INT >= Build.VERSION_CODES.TIRAMISU -> bundle.getParcelable(

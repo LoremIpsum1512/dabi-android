@@ -18,6 +18,7 @@ package com.dabi.dabi.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.dabi.dabi.viewmodels.FeedListViewModel
 import com.dabi.dabi.viewmodels.HomeViewModel
 
 import dagger.Binds
@@ -27,12 +28,21 @@ import dagger.multibindings.IntoMap
 @Suppress("unused")
 @Module
 abstract class ViewModelModule {
+    @Binds
+    abstract fun bindViewModelFactory(factory: AppViewModelFactory): ViewModelProvider.Factory
 
+    @Binds
+    @IntoMap
+    @ViewModelKey(FeedListViewModel::class)
+    abstract fun bindFeedListViewModel(viewModel: FeedListViewModel): ViewModel
+}
+
+@Suppress("unused")
+@Module
+abstract class HomeViewModule {
+    @HomeScope
     @Binds
     @IntoMap
     @ViewModelKey(HomeViewModel::class)
     abstract fun bindMainViewModel(viewModel: HomeViewModel): ViewModel
-
-    @Binds
-    abstract fun bindViewModelFactory(factory: AppViewModelFactory): ViewModelProvider.Factory
 }
