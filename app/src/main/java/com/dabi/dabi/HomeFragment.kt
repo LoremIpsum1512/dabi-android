@@ -26,12 +26,15 @@ class HomeFragment : Fragment() {
         val binding = FragmentHomeBinding.inflate(
             inflater, container, false
         )
-
         container?.let {
             if (!feedListFragment.isAdded)
                 childFragmentManager.beginTransaction()
                     .add(R.id.home_fragment_container_view, feedListFragment)
                     .commit()
+        }
+        binding.fooBtn.setOnClickListener{
+
+            feedListFragment.updateStyle()
         }
         return binding.root
     }

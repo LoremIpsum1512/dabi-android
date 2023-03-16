@@ -1,6 +1,7 @@
 package com.dabi.dabi
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.dabi.dabi.databinding.ActivityMainBinding
@@ -25,5 +26,6 @@ class MainActivity : AppCompatActivity() {
             DataBindingUtil.setContentView(
                 this, R.layout.activity_main
             )
+
     }
 }

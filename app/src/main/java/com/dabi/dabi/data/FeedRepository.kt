@@ -12,27 +12,30 @@ import javax.inject.Singleton
 
 class FeedRepository @Inject constructor(
     private val feedService: FeedService,
-    private val database: AppDatabase,
-    private val feedDao: FeedDao,
-    private val feedRemoteKeyDao: FeedRemoteKeyDao
-)  {
+) {
 
-
-    @OptIn(ExperimentalPagingApi::class)
-    fun getFeedPagingDataStream(): Flow<PagingData<Feed>> {
-        val pagingSourceFactory = {
-            feedDao.pagingSource()
-        }
+    fun getFeedPagingDataStream(
+        styleType: StyleType?
+    ): Flow<PagingData<Feed>> {
         return Pager(
             config = PagingConfig(pageSize = 20),
-            remoteMediator = FeedRemoteMediator(
-                database = database,
-                feedService = feedService,
-                feedDao = feedDao,
-                remoteKeyDao = feedRemoteKeyDao
-            ),
-            pagingSourceFactory = pagingSourceFactory
-        ).flow
+        ) {
+            FeedPagingSource(feedService, style = styleType)
+        }.flow
     }
 
 }
+
+//        val pagingSourceFactory = {
+//            feedDao.pagingSource()
+//        }
+//        return Pager(
+//            config = PagingConfig(pageSize = 20),
+//            remoteMediator = FeedRemoteMediator(
+//                database = database,
+//                feedService = feedService,
+//                feedDao = feedDao,
+//                remoteKeyDao = feedRemoteKeyDao
+//            ),
+//            pagingSourceFactory = pagingSourceFactory
+//        ).flow

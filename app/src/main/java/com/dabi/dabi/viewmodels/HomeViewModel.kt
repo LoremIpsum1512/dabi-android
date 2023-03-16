@@ -12,22 +12,22 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(private val feedRepository: FeedRepository) :
     ViewModel() {
 
-    private val styleFilter = MutableStateFlow<StyleType?>(null)
-    val feedFlow: Flow<PagingData<Feed>>
-
-    init {
-        feedFlow = getFeeds().cachedIn(viewModelScope)
-    }
-
-    private fun getFeeds(): Flow<PagingData<Feed>> =
-        feedRepository.getFeedPagingDataStream()
-
-
-    fun applyStyle() {
-        val style: StyleType = StyleType.values().random()
-        viewModelScope.launch {
-            styleFilter.emit(style)
-        }
-    }
+//    private val styleFilter = MutableStateFlow<StyleType?>(null)
+//    val feedFlow: Flow<PagingData<Feed>>
+//
+//    init {
+//        feedFlow = getFeeds().cachedIn(viewModelScope)
+//    }
+//
+//    private fun getFeeds(): Flow<PagingData<Feed>> =
+//        feedRepository.getFeedPagingDataStream()
+//
+//
+//    fun applyStyle() {
+//        val style: StyleType = StyleType.values().random()
+//        viewModelScope.launch {
+//            styleFilter.emit(style)
+//        }
+//    }
 
 }

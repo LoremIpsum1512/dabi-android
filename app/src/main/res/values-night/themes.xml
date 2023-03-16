@@ -14,6 +14,8 @@
         <!-- Customize your theme here. -->
         <item name="android:textViewStyle">@style/TextAppearance.Body</item>
         <item name="materialButtonStyle">@style/DefaultButton.Dark</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.App.BottomSheetDialog</item>
     </style>
+
 
 </resources>
