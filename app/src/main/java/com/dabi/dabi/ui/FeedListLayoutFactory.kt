@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dabi.dabi.adapters.FeedUIModel
-import com.dabi.dabi.views.FeedItemDecoration
-import com.dabi.dabi.views.HomeFeedListDecoration
+import com.dabi.dabi.ui.FeedItemDecoration
+import com.dabi.dabi.ui.HomeFeedListDecoration
 
 abstract class FeedListLayoutFactory {
     // header

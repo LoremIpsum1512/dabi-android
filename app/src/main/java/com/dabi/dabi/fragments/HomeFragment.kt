@@ -1,4 +1,4 @@
-package com.dabi.dabi
+package com.dabi.dabi.fragments
 
 
 import android.content.Context
@@ -8,6 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import com.dabi.dabi.FeedListFragment
+import com.dabi.dabi.FeedListParentScope
+import com.dabi.dabi.MainActivity
+import com.dabi.dabi.R
 import com.dabi.dabi.databinding.FragmentHomeBinding
 
 

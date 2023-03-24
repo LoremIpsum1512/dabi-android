@@ -1,4 +1,4 @@
-package com.dabi.dabi
+package com.dabi.dabi.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

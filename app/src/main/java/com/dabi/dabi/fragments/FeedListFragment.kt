@@ -22,6 +22,7 @@ import com.dabi.dabi.adapters.FeedListPlaceholderAdapter
 import com.dabi.dabi.databinding.FragmentFeedListBinding
 import com.dabi.dabi.adapters.FeedClickEvent
 import com.dabi.dabi.adapters.FeedListAdapter
+import com.dabi.dabi.fragments.FeedDetailFragmentDirections
 import com.dabi.dabi.viewmodels.FeedListViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged

@@ -1,4 +1,4 @@
-package com.dabi.dabi
+package com.dabi.dabi.fragments
 
 import android.content.Context
 import android.os.Bundle
@@ -7,6 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
+import com.dabi.dabi.FeedListFragment
+import com.dabi.dabi.MainActivity
+import com.dabi.dabi.R
 import com.dabi.dabi.databinding.FragmentFeedDetailBinding
 
 class FeedDetailFragment : Fragment() {

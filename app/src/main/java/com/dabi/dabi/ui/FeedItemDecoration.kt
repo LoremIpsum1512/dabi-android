@@ -1,4 +1,4 @@
-package com.dabi.dabi.views
+package com.dabi.dabi.ui
 
 import android.graphics.Rect
 import android.view.View
