@@ -28,21 +28,34 @@ import dagger.multibindings.IntoMap
 @Suppress("unused")
 @Module
 abstract class ViewModelModule {
+}
+
+@Suppress("unused")
+@Module
+abstract class HomeViewModule {
+
     @Binds
     abstract fun bindViewModelFactory(factory: AppViewModelFactory): ViewModelProvider.Factory
-
+    @HomeScope
+    @Binds
+    @IntoMap
+    @ViewModelKey(HomeViewModel::class)
+    abstract fun bindMainViewModel(viewModel: HomeViewModel): ViewModel
+    @HomeScope
     @Binds
     @IntoMap
     @ViewModelKey(FeedListViewModel::class)
     abstract fun bindFeedListViewModel(viewModel: FeedListViewModel): ViewModel
 }
 
-@Suppress("unused")
+
 @Module
-abstract class HomeViewModule {
-    @HomeScope
+abstract class FeedListViewModule {
+    @Binds
+    abstract fun bindViewModelFactory(factory: AppViewModelFactory): ViewModelProvider.Factory
     @Binds
     @IntoMap
-    @ViewModelKey(HomeViewModel::class)
-    abstract fun bindMainViewModel(viewModel: HomeViewModel): ViewModel
+    @ViewModelKey(FeedListViewModel::class)
+    abstract fun bindFeedListViewModel(viewModel: FeedListViewModel): ViewModel
 }
+

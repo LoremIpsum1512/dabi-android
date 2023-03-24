@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.dabi.dabi.databinding.FragmentHomeBinding
 
@@ -32,10 +33,12 @@ class HomeFragment : Fragment() {
                     .add(R.id.home_fragment_container_view, feedListFragment)
                     .commit()
         }
-        binding.fooBtn.setOnClickListener{
 
-            feedListFragment.updateStyle()
-        }
+        childFragmentManager.setFragmentResult(
+            FeedListFragment.feed_list_request_key,
+            bundleOf(FeedListFragment.parent_scope_key to FeedListParentScope.Home)
+        )
+
         return binding.root
     }
 }

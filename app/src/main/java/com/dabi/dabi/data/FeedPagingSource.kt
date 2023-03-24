@@ -6,7 +6,7 @@ import com.dabi.dabi.api.FeedService
 
 class FeedPagingSource(
     private val feedService: FeedService,
-    private val style: StyleType?
+    private val query: FeedQuery?
 ) : PagingSource<Int, Feed>() {
 
     override fun getRefreshKey(state: PagingState<Int, Feed>): Int? {
@@ -19,7 +19,15 @@ class FeedPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Feed> {
         return try {
             val nextPageNumber = params.key ?: 0
-            val response = feedService.getPagingFeed(nextPageNumber, style = style)
+            val response = query?.let { it ->
+                val q = it.asQueryParams()
+                feedService.getPagingFeed(
+                    nextPageNumber,
+                    style = q.style,
+                    maxHeight = q.maxHeight,
+                    minHeight = q.minHeight
+                )
+            } ?: feedService.getPagingFeed(nextPageNumber)
             LoadResult.Page(
                 data = response.results,
                 prevKey = null, // Only paging forward.

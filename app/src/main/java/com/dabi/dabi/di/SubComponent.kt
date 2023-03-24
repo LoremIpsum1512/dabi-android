@@ -12,10 +12,21 @@ interface HomeComponent {
     interface Factory {
         fun create(): HomeComponent
     }
-
     fun inject(homeFragment: HomeFragment)
     fun inject(feedListFragment: FeedListFragment)
+
 }
+
+@Subcomponent(modules = [FeedListViewModule::class])
+interface FeedListComponent {
+    @Subcomponent.Factory
+    interface Factory {
+        fun create(): FeedListComponent
+    }
+    fun inject(feedListFragment: FeedListFragment)
+}
+
+
 
 @FeedDetailScope
 @Subcomponent()

@@ -7,11 +7,13 @@ import androidx.databinding.DataBindingUtil
 import com.dabi.dabi.databinding.ActivityMainBinding
 import com.dabi.dabi.di.AppComponent
 import com.dabi.dabi.di.FeedDetailComponent
+import com.dabi.dabi.di.FeedListComponent
 import com.dabi.dabi.di.HomeComponent
 
 class MainActivity : AppCompatActivity() {
     lateinit var appComponent: AppComponent
     lateinit var homeComponent: HomeComponent
+    lateinit var feedListComponent: FeedListComponent
     lateinit var feedDetailComponent: FeedDetailComponent
     private lateinit var binding: ActivityMainBinding
 
@@ -21,6 +23,7 @@ class MainActivity : AppCompatActivity() {
 
         homeComponent = appComponent.homeComponent().create()
         feedDetailComponent = appComponent.feedComponent().create()
+        feedListComponent = appComponent.feedListComponent().create()
 
         binding =
             DataBindingUtil.setContentView(

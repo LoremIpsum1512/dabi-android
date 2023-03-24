@@ -1,12 +1,11 @@
 package com.dabi.dabi.data
 
-import androidx.paging.ExperimentalPagingApi
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
+import androidx.paging.*
+import com.dabi.dabi.adapters.FeedUIModel
 import com.dabi.dabi.data.local.AppDatabase
 import com.dabi.dabi.api.FeedService
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -15,13 +14,15 @@ class FeedRepository @Inject constructor(
 ) {
 
     fun getFeedPagingDataStream(
-        styleType: StyleType?
+        query: FeedQuery?
     ): Flow<PagingData<Feed>> {
         return Pager(
             config = PagingConfig(pageSize = 20),
         ) {
-            FeedPagingSource(feedService, style = styleType)
+            FeedPagingSource(feedService, query)
         }.flow
+
+
     }
 
 }

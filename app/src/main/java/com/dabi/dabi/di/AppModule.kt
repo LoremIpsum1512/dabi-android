@@ -12,7 +12,7 @@ import retrofit2.Retrofit
 import javax.inject.Singleton
 
 @Module(
-    includes = [NetworkModule::class, ViewModelModule::class],
+    includes = [NetworkModule::class],
     subcomponents = [HomeComponent::class, FeedDetailComponent::class]
 )
 class AppModule {

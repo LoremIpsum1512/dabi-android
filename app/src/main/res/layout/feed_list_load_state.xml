@@ -30,9 +30,9 @@
                 android:id="@+id/placeholder"
                 android:layout_width="match_parent"
                 android:layout_height="916dp"
-                android:horizontalSpacing="@dimen/feed_item_spacing"
+                android:horizontalSpacing="@dimen/spacing_s"
                 android:numColumns="2"
-                android:verticalSpacing="@dimen/feed_item_spacing" />
+                android:verticalSpacing="@dimen/spacing_s" />
         </com.facebook.shimmer.ShimmerFrameLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout

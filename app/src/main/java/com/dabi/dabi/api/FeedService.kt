@@ -13,6 +13,8 @@ interface FeedService {
         @Query("offset") offset: Int? = 0,
         @Query("limit") limit: Int? = PAGING_LIMIT,
         @Query("is_valid") is_valid: Boolean = true,
-        @Query("user_style") style: StyleType? = null
+        @Query("user_style") style: StyleType? = null,
+        @Query("user__height_min") minHeight: Int? = null,
+        @Query("user__height_max") maxHeight: Int? = null
     ): PagingResponse<Feed>
 }
