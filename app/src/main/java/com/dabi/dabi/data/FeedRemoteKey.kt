@@ -3,7 +3,7 @@ package com.dabi.dabi.data
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-enum class StyleType(private val value: String) {
+enum class StyleType(val value: String) {
     Feminine("feminine"),
     Lovely("lovely"),
     Sexy("sexy"),

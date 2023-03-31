@@ -8,16 +8,16 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.dabi.dabi.FeedItemViewHolder
-import com.dabi.dabi.HomeFilterGroupViewHolder
+import com.dabi.dabi.HomeHeaderViewHolder
 import com.dabi.dabi.R
 import com.dabi.dabi.databinding.FeedListItemBinding
 import com.dabi.dabi.data.Feed
-import com.dabi.dabi.databinding.FragmentHomeFeedFiltersBinding
+import com.dabi.dabi.databinding.FragmentHomeHeaderBinding
 
 sealed class FeedUIModel {
     class ImageItem(val feed: Feed) : FeedUIModel()
 
-    object HomeFilterGroup : FeedUIModel()
+    object HomeHeader : FeedUIModel()
 }
 
 class FeedListAdapter(private val clickEvent: FeedClickEvent) :
@@ -43,7 +43,7 @@ class FeedListAdapter(private val clickEvent: FeedClickEvent) :
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
             is FeedUIModel.ImageItem -> R.layout.feed_list_item
-            is FeedUIModel.HomeFilterGroup -> R.layout.fragment_home_feed_filters
+            is FeedUIModel.HomeHeader -> R.layout.fragment_home_feed_filters
             else -> throw UnsupportedOperationException("Unknown view")
         }
     }
@@ -61,12 +61,12 @@ class FeedListAdapter(private val clickEvent: FeedClickEvent) :
                 FeedItemViewHolder(binding, clickEvent)
             }
             R.layout.fragment_home_feed_filters -> {
-                val binding = FragmentHomeFeedFiltersBinding.inflate(
+                val binding = FragmentHomeHeaderBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
                 )
-                HomeFilterGroupViewHolder(binding)
+                HomeHeaderViewHolder(binding)
             }
             else -> throw UnsupportedOperationException("Unknown viewType")
         }
@@ -76,7 +76,7 @@ class FeedListAdapter(private val clickEvent: FeedClickEvent) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (val uiModel = getItem(position)) {
             is FeedUIModel.ImageItem -> (holder as FeedItemViewHolder).bind(uiModel.feed)
-            FeedUIModel.HomeFilterGroup -> (holder as HomeFilterGroupViewHolder).bind()
+            FeedUIModel.HomeHeader -> (holder as HomeHeaderViewHolder).bind()
             null -> throw NotImplementedError()
         }
 

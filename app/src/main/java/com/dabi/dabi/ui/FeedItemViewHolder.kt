@@ -5,6 +5,7 @@ import com.dabi.dabi.adapters.FeedClickEvent
 import com.dabi.dabi.data.Feed
 import com.dabi.dabi.databinding.FeedListItemBinding
 import com.dabi.dabi.databinding.FragmentHomeFeedFiltersBinding
+import com.dabi.dabi.databinding.FragmentHomeHeaderBinding
 
 class FeedItemViewHolder(
     private val binding: FeedListItemBinding,
@@ -20,8 +21,8 @@ class FeedItemViewHolder(
     }
 }
 
-class HomeFilterGroupViewHolder(
-    private val binding: FragmentHomeFeedFiltersBinding,
+class HomeHeaderViewHolder(
+    private val binding: FragmentHomeHeaderBinding,
 ) :
     RecyclerView.ViewHolder(binding.root) {
     fun bind() {

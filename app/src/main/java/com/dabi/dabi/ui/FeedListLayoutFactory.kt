@@ -36,7 +36,7 @@ class HomeFeedListLayoutFactory(
     getItemViewType: (Int) -> Int,
     context: Context,
 ) : FeedListLayoutFactory() {
-    override var header: FeedUIModel? = FeedUIModel.HomeFilterGroup
+    override var header: FeedUIModel? = FeedUIModel.HomeHeader
 
     override var layoutManager: RecyclerView.LayoutManager = GridLayoutManager(
         context, 2

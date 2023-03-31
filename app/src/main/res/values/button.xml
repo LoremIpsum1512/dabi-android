@@ -2,23 +2,40 @@
 <resources>
 
     <style name="DefaultButton" parent="Widget.MaterialComponents.Button">
-        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Button</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Button</item>
         <item name="android:textAppearance">@style/TextAppearance.H4</item>
         <item name="elevation">0dp</item>
         <item name="cornerRadius">0dp</item>
     </style>
 
-    <style name="DefaultButton.Dark" parent="DefaultButton">
-        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Button.Dark</item>
+    <style name="ToggleButton" parent="DefaultButton">
+        <item name="cornerRadius">20dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetTop">0dp</item>
     </style>
 
-    <style name="ThemeOverlay.App.Button" parent="">
+    <style name="ToggleButton.deselected" parent="DefaultButton">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.ToggleButton</item>
+        <item name="cornerRadius">20dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.H4</item>
+    </style>
+
+    <style name="DefaultButton.Dark" parent="DefaultButton">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Button.Dark</item>
+    </style>
+
+    <style name="ThemeOverlay.Button" parent="">
         <item name="colorPrimary">@color/black</item>
         <item name="colorOnPrimary">@color/white</item>
     </style>
 
-    <style name="ThemeOverlay.App.Button.Dark" parent="">
+    <style name="ThemeOverlay.Button.Dark" parent="">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorOnPrimary">@color/white</item>
+    </style>
+
+    <style name="ThemeOverlay.ToggleButton" parent="">
+        <item name="colorPrimary">@color/component_gray</item>
+        <item name="colorOnPrimary">@color/black</item>
     </style>
 </resources>
