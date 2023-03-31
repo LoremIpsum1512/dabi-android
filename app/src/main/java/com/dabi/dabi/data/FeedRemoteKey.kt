@@ -2,6 +2,7 @@ package com.dabi.dabi.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.dabi.dabi.adapters.FilterEntry
 
 enum class StyleType(val value: String) {
     Feminine("feminine"),
@@ -13,6 +14,13 @@ enum class StyleType(val value: String) {
 
     override fun toString(): String {
         return value
+    }
+
+    fun asFilterEntry(): FilterEntry<StyleType>{
+        return FilterEntry(
+            name = value,
+            value = this
+        )
     }
 
     companion object {

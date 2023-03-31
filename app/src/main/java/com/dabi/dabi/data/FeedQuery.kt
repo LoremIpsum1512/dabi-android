@@ -1,5 +1,6 @@
 package com.dabi.dabi.data
 
+import com.dabi.dabi.adapters.FilterEntry
 import kotlin.math.max
 
 data class FeedQuery(
@@ -54,4 +55,11 @@ sealed class HeightQueryValue(open val range: Pair<Int, Int?>, open val name: St
         override val range: Pair<Int, Int?> = Pair(171, null),
         override val name: String = "151~155cm"
     ) : HeightQueryValue(range, name)
+
+    fun asFilterEntry() : FilterEntry<HeightQueryValue>{
+        return FilterEntry(
+            name = name,
+            value = this
+        )
+    }
 }

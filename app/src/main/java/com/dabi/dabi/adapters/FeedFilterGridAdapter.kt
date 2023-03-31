@@ -6,13 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import com.dabi.dabi.databinding.ToogleButtonBinding
+import timber.log.Timber
 
-class FeedFilterGridAdapter(val list: List<String>) : BaseAdapter() {
+class FeedFilterGridAdapter<T>(val list: List<FilterEntry<T>>, val onClick: (value: T) -> Unit) :
+    BaseAdapter() {
     override fun getCount(): Int {
         return list.size
     }
 
-    override fun getItem(index: Int): String {
+    private var selectedValue: T? = null
+
+    override fun getItem(index: Int): FilterEntry<T> {
         return list[index]
     }
 
@@ -27,8 +31,22 @@ class FeedFilterGridAdapter(val list: List<String>) : BaseAdapter() {
             parent,
             false
         )
-        binding.toggleButton.text = getItem(index)
-        binding.isSelected = true
+
+        val item = getItem(index)
+        binding.toggleButton.text = item.name
+        binding.toggleButton.setOnClickListener {
+            onClick(item.value)
+        }
+        Timber.d("getItem $item | $selectedValue | ${item.value == selectedValue}")
+        binding.isSelected = item.value == selectedValue
         return binding.root
     }
+
+    fun onSelect(value: T?) {
+        Timber.d("Onselect $value")
+        selectedValue = value
+        notifyDataSetChanged()
+    }
 }
+
+data class FilterEntry<T>(val name: String, val value: T)
