@@ -36,20 +36,11 @@ class ModalBottomSheet : BottomSheetDialogFragment() {
         )
         val feedFilterAdapter = FeedFilterGridAdapter(
             list = StyleType.values().map { it.asFilterEntry() },
-
-            ) { styleType ->
-            feedListViewModel.styleQuery.value = styleType
+        ) { index ->
+            val style =  StyleType.values()[index]
+            feedListViewModel.styleQuery.value = style
         }
-
         binding.feedGroupFilter.adapter = feedFilterAdapter
-
-        lifecycleScope.launch {
-            feedListViewModel.styleQuery.distinctUntilChanged{
-                old, new ->  old == new
-            }.collectLatest {
-                feedFilterAdapter.onSelect(it)
-            }
-        }
         return binding.root
     }
 

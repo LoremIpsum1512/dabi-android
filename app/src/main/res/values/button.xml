@@ -5,6 +5,7 @@
         <item name="materialThemeOverlay">@style/ThemeOverlay.Button</item>
         <item name="android:textAppearance">@style/TextAppearance.H4</item>
         <item name="elevation">0dp</item>
+        <item name="android:outlineProvider">none</item>
         <item name="cornerRadius">0dp</item>
     </style>
 
@@ -12,12 +13,7 @@
         <item name="cornerRadius">20dp</item>
         <item name="android:insetBottom">0dp</item>
         <item name="android:insetTop">0dp</item>
-    </style>
-
-    <style name="ToggleButton.deselected" parent="DefaultButton">
         <item name="materialThemeOverlay">@style/ThemeOverlay.ToggleButton</item>
-        <item name="cornerRadius">20dp</item>
-        <item name="android:textAppearance">@style/TextAppearance.H4</item>
     </style>
 
     <style name="DefaultButton.Dark" parent="DefaultButton">

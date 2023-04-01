@@ -15,8 +15,6 @@
         style="@style/ToggleButton"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-
-        app:isSelected="@{isSelected}"
         android:insetBottom="0dp"
         tools:text="Any String" />
 </layout>

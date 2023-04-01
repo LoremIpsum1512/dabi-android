@@ -5,16 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import androidx.core.content.ContextCompat
+import com.dabi.dabi.R
 import com.dabi.dabi.databinding.ToogleButtonBinding
 import timber.log.Timber
 
-class FeedFilterGridAdapter<T>(val list: List<FilterEntry<T>>, val onClick: (value: T) -> Unit) :
+class FeedFilterGridAdapter<T>(val list: List<FilterEntry<T>>, val onClick: (index: Int) -> Unit) :
     BaseAdapter() {
     override fun getCount(): Int {
         return list.size
     }
 
-    private var selectedValue: T? = null
+    private var selectedIndex = -1
 
     override fun getItem(index: Int): FilterEntry<T> {
         return list[index]
@@ -31,20 +33,28 @@ class FeedFilterGridAdapter<T>(val list: List<FilterEntry<T>>, val onClick: (val
             parent,
             false
         )
-
+        Timber.d("getItem $index | $selectedIndex | ${index == selectedIndex}")
         val item = getItem(index)
+
+        // binding.isSelected = index == selectedIndex
+        if (index == selectedIndex) {
+            binding.toggleButton.setBackgroundColor(ContextCompat.getColor(parent.context, R.color.black))
+            binding.toggleButton.setTextColor(ContextCompat.getColor(parent.context, R.color.white))
+        }else {
+            binding.toggleButton.setBackgroundColor(ContextCompat.getColor(parent.context, R.color.bg_gray))
+            binding.toggleButton.setTextColor(ContextCompat.getColor(parent.context, R.color.black))
+        }
         binding.toggleButton.text = item.name
         binding.toggleButton.setOnClickListener {
-            onClick(item.value)
+            onClick(index)
+            onSelect(index)
         }
-        Timber.d("getItem $item | $selectedValue | ${item.value == selectedValue}")
-        binding.isSelected = item.value == selectedValue
         return binding.root
     }
 
-    fun onSelect(value: T?) {
-        Timber.d("Onselect $value")
-        selectedValue = value
+    fun onSelect(index: Int) {
+        Timber.d("Onselect $index")
+        selectedIndex = index
         notifyDataSetChanged()
     }
 }
