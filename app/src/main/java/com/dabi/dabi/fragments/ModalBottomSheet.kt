@@ -1,5 +1,6 @@
 package com.dabi.dabi.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,13 +23,18 @@ import javax.inject.Inject
 class ModalBottomSheet : BottomSheetDialogFragment() {
     @Inject
     lateinit var modelFactory: AppViewModelFactory
-    val feedListViewModel by viewModels<FeedListViewModel> { modelFactory }
+    private val feedListViewModel by viewModels<FeedListViewModel> { modelFactory }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (activity as MainActivity).homeComponent.inject(this)
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        (activity as MainActivity).homeComponent.inject(this)
+
         val binding = ModalBottomSheetBinding.inflate(
             inflater,
             container,
@@ -38,7 +44,7 @@ class ModalBottomSheet : BottomSheetDialogFragment() {
             list = StyleType.values().map { it.asFilterEntry() },
         ) { index ->
             val style =  StyleType.values()[index]
-            feedListViewModel.styleQuery.value = style
+            feedListViewModel.setStyle(style)
         }
         binding.feedGroupFilter.adapter = feedFilterAdapter
         return binding.root

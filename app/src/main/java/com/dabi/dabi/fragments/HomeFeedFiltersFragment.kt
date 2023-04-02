@@ -11,6 +11,7 @@ import com.dabi.dabi.databinding.FragmentHomeHeaderBinding
 
 class HomeFeedFiltersFragment : Fragment() {
     lateinit var binding: FragmentHomeFeedFiltersBinding
+    val bottomSheet = ModalBottomSheet()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -23,9 +24,7 @@ class HomeFeedFiltersFragment : Fragment() {
         )
 
         binding.fooBtn.setOnClickListener { view ->
-            val bottomSheet = ModalBottomSheet(
 
-            )
 
             bottomSheet.show(childFragmentManager, ModalBottomSheet.TAG)
 

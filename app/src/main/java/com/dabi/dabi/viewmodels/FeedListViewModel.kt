@@ -7,23 +7,30 @@ import com.dabi.dabi.adapters.FeedUIModel
 import com.dabi.dabi.data.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import okhttp3.internal.notify
 import javax.inject.Inject
 
 class FeedListViewModel @Inject constructor(private val feedRepository: FeedRepository) :
     ViewModel() {
 
-    val styleQuery = MutableStateFlow<StyleType?>(null)
+    private val styleQuery = MutableStateFlow<StyleType?>(null)
     val heightQuery = MutableStateFlow<HeightQueryValue?>(null)
+    var header: FeedUIModel? = null
 
-    private val _feedQuery: Flow<FeedQuery> = styleQuery.combine(heightQuery) { style, height ->
+    private val _feedQuery: Flow<FeedQuery> = styleQuery.map { style ->
         FeedQuery(
             style = style,
-            height = height
+            height = null
         )
     }.distinctUntilChanged()
 
     private val _uiModelFlow = MutableStateFlow<PagingData<FeedUIModel>>(PagingData.empty())
-    val uiModelFlow: Flow<PagingData<FeedUIModel>> = _uiModelFlow.cachedIn(viewModelScope)
+    val uiModelFlow: Flow<PagingData<FeedUIModel>> = _uiModelFlow
+        .map{pagingData ->
+             header?.let { pagingData.insertHeaderItem(item = header!!) } ?: pagingData
+
+    }
+        .cachedIn(viewModelScope)
 
     private fun getPagingUIModel(query: FeedQuery?): Flow<PagingData<FeedUIModel>> {
         return feedRepository.getFeedPagingDataStream(query).cachedIn(viewModelScope)
@@ -34,8 +41,16 @@ class FeedListViewModel @Inject constructor(private val feedRepository: FeedRepo
 
     init {
         viewModelScope.launch {
-            _feedQuery.flatMapLatest { getPagingUIModel(it) }.collectLatest { pagingData ->
+            _feedQuery.flatMapLatest {
+                getPagingUIModel(it)
+            }.collectLatest { pagingData ->
                 _uiModelFlow.emit(pagingData)
+            }
+        }
+
+        viewModelScope.launch {
+            styleQuery.collect {
+                it
             }
         }
 
@@ -49,12 +64,18 @@ class FeedListViewModel @Inject constructor(private val feedRepository: FeedRepo
         }
     }
 
-    fun setHeader(uiModel: FeedUIModel) {
-        viewModelScope.launch {
-            _uiModelFlow.emit(
-                _uiModelFlow.value.insertHeaderItem(item = uiModel)
-            )
-        }
+    fun setHeaderUiModel(uiModel: FeedUIModel) {
+        header = uiModel
+
+//        viewModelScope.launch {
+//            _uiModelFlow.emit(
+//                _uiModelFlow.value.insertHeaderItem(item = uiModel)
+//            )
+//        }
     }
 
+    fun setStyle(styleType: StyleType){
+        styleQuery.value = styleType
+
+    }
 }

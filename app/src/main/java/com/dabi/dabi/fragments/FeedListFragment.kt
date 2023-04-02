@@ -71,7 +71,7 @@ class FeedListFragment : Fragment() {
                         getItemViewType = { feedListAdapter.getItemViewType(it) },
                         context = context
                     )
-                    viewModel.setHeader(layout.header!!)
+                    viewModel.setHeaderUiModel(layout.header!!)
                     binding.feedList.apply {
                         for (i in (0 until this.itemDecorationCount)) {
                             val itemDeco = this.getItemDecorationAt(i)
