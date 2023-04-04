@@ -1,35 +1,45 @@
 package com.dabi.dabi.viewmodels
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import androidx.paging.*
 import com.dabi.dabi.adapters.FeedUIModel
 import com.dabi.dabi.data.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import okhttp3.internal.notify
+import okhttp3.internal.notifyAll
+import java.util.UUID
 import javax.inject.Inject
 
 class FeedListViewModel @Inject constructor(private val feedRepository: FeedRepository) :
     ViewModel() {
 
     private val styleQuery = MutableStateFlow<StyleType?>(null)
-    val heightQuery = MutableStateFlow<HeightQueryValue?>(null)
-    var header: FeedUIModel? = null
-
-    private val _feedQuery: Flow<FeedQuery> = styleQuery.map { style ->
+    private val heightQuery = MutableStateFlow<HeightQueryValue?>(null)
+    private var header: FeedUIModel? = null
+    // generate random UUID every refresh call to force create new PagingData
+    private val refreshIdFlow = MutableStateFlow<String>("")
+    private val _feedQuery: Flow<FeedQuery?> = styleQuery.combine(heightQuery) { style, height ->
         FeedQuery(
             style = style,
-            height = null
+            height = height
         )
     }.distinctUntilChanged()
 
-    private val _uiModelFlow = MutableStateFlow<PagingData<FeedUIModel>>(PagingData.empty())
-    val uiModelFlow: Flow<PagingData<FeedUIModel>> = _uiModelFlow
-        .map{pagingData ->
-             header?.let { pagingData.insertHeaderItem(item = header!!) } ?: pagingData
+    private val _uiModelFlow = refreshIdFlow.combine(_feedQuery) { _, query ->
+        query
+    }.flatMapLatest { query ->
+        getPagingUIModel(query)
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000L),
+        initialValue = PagingData.empty()
+    )
 
-    }
+
+    val uiModelFlow: Flow<PagingData<FeedUIModel>> = _uiModelFlow
+        .map { pagingData ->
+            header?.let { pagingData.insertHeaderItem(item = header!!) } ?: pagingData
+        }
         .cachedIn(viewModelScope)
 
     private fun getPagingUIModel(query: FeedQuery?): Flow<PagingData<FeedUIModel>> {
@@ -40,27 +50,13 @@ class FeedListViewModel @Inject constructor(private val feedRepository: FeedRepo
     }
 
     init {
-        viewModelScope.launch {
-            _feedQuery.flatMapLatest {
-                getPagingUIModel(it)
-            }.collectLatest { pagingData ->
-                _uiModelFlow.emit(pagingData)
-            }
-        }
 
-        viewModelScope.launch {
-            styleQuery.collect {
-                it
-            }
-        }
 
     }
 
     fun refresh() {
         viewModelScope.launch {
-            getPagingUIModel(null).collectLatest {
-                _uiModelFlow.emit(it)
-            }
+            refreshIdFlow.emit(UUID.randomUUID().toString())
         }
     }
 
@@ -74,7 +70,7 @@ class FeedListViewModel @Inject constructor(private val feedRepository: FeedRepo
 //        }
     }
 
-    fun setStyle(styleType: StyleType){
+    fun setStyle(styleType: StyleType) {
         styleQuery.value = styleType
 
     }

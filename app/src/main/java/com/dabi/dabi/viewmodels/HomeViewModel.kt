@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class HomeViewModel @Inject constructor(private val feedRepository: FeedRepository) :
+class HomeViewModel @Inject constructor() :
     ViewModel() {
 
 //    private val styleFilter = MutableStateFlow<StyleType?>(null)

@@ -14,44 +14,50 @@ import com.dabi.dabi.data.StyleType
 import com.dabi.dabi.databinding.ModalBottomSheetBinding
 import com.dabi.dabi.di.AppViewModelFactory
 import com.dabi.dabi.viewmodels.FeedListViewModel
+import com.dabi.dabi.viewmodels.HomeViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class ModalBottomSheet : BottomSheetDialogFragment() {
-    @Inject
-    lateinit var modelFactory: AppViewModelFactory
-    private val feedListViewModel by viewModels<FeedListViewModel> { modelFactory }
+class ModalBottomSheet(
+    private val feedListViewModel: FeedListViewModel
+) : BottomSheetDialogFragment() {
+    lateinit var binding: ModalBottomSheetBinding
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        (activity as MainActivity).homeComponent.inject(this)
-    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
-        val binding = ModalBottomSheetBinding.inflate(
+        binding = ModalBottomSheetBinding.inflate(
             inflater,
             container,
             false
         )
-        val feedFilterAdapter = FeedFilterGridAdapter(
-            list = StyleType.values().map { it.asFilterEntry() },
-        ) { index ->
-            val style =  StyleType.values()[index]
-            feedListViewModel.setStyle(style)
-        }
-        binding.feedGroupFilter.adapter = feedFilterAdapter
+
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val feedFilterAdapter = FeedFilterGridAdapter(
+            list = StyleType.values().map { it.asFilterEntry() },
+        ) { index ->
+            val style = StyleType.values()[index]
+            feedListViewModel.setStyle(style)
+        }
+        binding.feedGroupFilter.adapter = feedFilterAdapter
+    }
+
+
     companion object {
         const val TAG = "ModalBottomSheet"
+
+
     }
 
 

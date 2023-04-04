@@ -19,7 +19,6 @@ class HomeFragment : Fragment() {
     private lateinit var feedListFragment: FeedListFragment
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (activity as MainActivity).homeComponent.inject(this)
         feedListFragment = FeedListFragment()
     }
 

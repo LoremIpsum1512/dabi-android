@@ -40,7 +40,7 @@ abstract class HomeViewModule {
     @Binds
     @IntoMap
     @ViewModelKey(HomeViewModel::class)
-    abstract fun bindMainViewModel(viewModel: HomeViewModel): ViewModel
+    abstract fun bindHomeViewModel(viewModel: HomeViewModel): ViewModel
     @HomeScope
     @Binds
     @IntoMap

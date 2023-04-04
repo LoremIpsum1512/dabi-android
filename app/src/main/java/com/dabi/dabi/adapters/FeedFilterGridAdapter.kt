@@ -33,7 +33,6 @@ class FeedFilterGridAdapter<T>(val list: List<FilterEntry<T>>, val onClick: (ind
             parent,
             false
         )
-        Timber.d("getItem $index | $selectedIndex | ${index == selectedIndex}")
         val item = getItem(index)
 
         // binding.isSelected = index == selectedIndex
@@ -52,8 +51,7 @@ class FeedFilterGridAdapter<T>(val list: List<FilterEntry<T>>, val onClick: (ind
         return binding.root
     }
 
-    fun onSelect(index: Int) {
-        Timber.d("Onselect $index")
+    private fun onSelect(index: Int) {
         selectedIndex = index
         notifyDataSetChanged()
     }
