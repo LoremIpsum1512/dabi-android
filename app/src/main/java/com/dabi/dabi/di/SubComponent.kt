@@ -1,10 +1,7 @@
 package com.dabi.dabi.di
 
-import com.dabi.dabi.fragments.FeedDetailFragment
 import com.dabi.dabi.FeedListFragment
-import com.dabi.dabi.fragments.HomeFeedFiltersFragment
-import com.dabi.dabi.fragments.HomeFragment
-import com.dabi.dabi.fragments.ModalBottomSheet
+import com.dabi.dabi.fragments.*
 import dagger.Subcomponent
 
 @HomeScope
@@ -19,7 +16,8 @@ interface HomeComponent {
 
     fun inject(modalBottomSheet: ModalBottomSheet)
 
-    fun inject(homeFeedListFiltersFragment: HomeFeedFiltersFragment)
+
+    fun inject(homeHeaderFragment: HomeHeaderFragment)
 }
 
 @Subcomponent(modules = [FeedListViewModule::class])

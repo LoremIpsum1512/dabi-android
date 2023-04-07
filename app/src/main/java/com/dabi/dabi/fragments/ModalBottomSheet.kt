@@ -56,8 +56,6 @@ class ModalBottomSheet(
 
     companion object {
         const val TAG = "ModalBottomSheet"
-
-
     }
 
 

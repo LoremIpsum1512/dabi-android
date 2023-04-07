@@ -17,7 +17,7 @@ import com.dabi.dabi.databinding.FragmentHomeHeaderBinding
 sealed class FeedUIModel {
     class ImageItem(val feed: Feed) : FeedUIModel()
 
-    object HomeHeader : FeedUIModel()
+    class HomeHeader() : FeedUIModel()
 }
 
 class FeedListAdapter(private val clickEvent: FeedClickEvent) :
@@ -76,7 +76,7 @@ class FeedListAdapter(private val clickEvent: FeedClickEvent) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (val uiModel = getItem(position)) {
             is FeedUIModel.ImageItem -> (holder as FeedItemViewHolder).bind(uiModel.feed)
-            FeedUIModel.HomeHeader -> (holder as HomeHeaderViewHolder).bind()
+           is FeedUIModel.HomeHeader -> (holder as HomeHeaderViewHolder).bind()
             null -> throw NotImplementedError()
         }
 

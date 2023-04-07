@@ -11,11 +11,7 @@
         android:layout_height="wrap_content"
         tools:context=".HomeFeedFilterGroup">
 
-        <Button
-            android:text="lorem ipsum"
-            android:id="@+id/foo_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+
 
     </FrameLayout>
 </layout>

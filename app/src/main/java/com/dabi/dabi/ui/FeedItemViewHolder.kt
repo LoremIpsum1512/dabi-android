@@ -6,6 +6,7 @@ import com.dabi.dabi.data.Feed
 import com.dabi.dabi.databinding.FeedListItemBinding
 import com.dabi.dabi.databinding.FragmentHomeFeedFiltersBinding
 import com.dabi.dabi.databinding.FragmentHomeHeaderBinding
+import com.dabi.dabi.fragments.ModalBottomSheet
 
 class FeedItemViewHolder(
     private val binding: FeedListItemBinding,
@@ -26,6 +27,9 @@ class HomeHeaderViewHolder(
 ) :
     RecyclerView.ViewHolder(binding.root) {
     fun bind() {
-
+        binding.fooBtn.setOnClickListener {
+            val bottomSheet = ModalBottomSheet(feedListViewModel)
+            bottomSheet.show(parentFragmentManager, ModalBottomSheet.TAG)
+        }
     }
 }

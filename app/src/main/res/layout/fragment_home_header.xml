@@ -17,11 +17,10 @@
         <!--            android:layout_width="match_parent"-->
         <!--            android:layout_height="280dp"-->
         <!--            android:background="@color/bg_gray" />-->
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/feed_filter_fcv"
-            android:name="com.dabi.dabi.fragments.HomeFeedFiltersFragment"
+        <Button
+            android:text="lorem ipsum"
+            android:id="@+id/foo_btn"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:layout="@layout/fragment_home_feed_filters" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 </layout>
