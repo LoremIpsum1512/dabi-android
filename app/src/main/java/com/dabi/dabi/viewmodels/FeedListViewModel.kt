@@ -6,19 +6,20 @@ import com.dabi.dabi.adapters.FeedUIModel
 import com.dabi.dabi.data.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import okhttp3.internal.notifyAll
 import java.util.UUID
 import javax.inject.Inject
 
 class FeedListViewModel @Inject constructor(private val feedRepository: FeedRepository) :
     ViewModel() {
 
-    private val styleQuery = MutableStateFlow<StyleType?>(null)
+    private val _styleQuery = MutableStateFlow<StyleType?>(null)
+    val styleType = _styleQuery.asStateFlow()
+
     private val heightQuery = MutableStateFlow<HeightQueryValue?>(null)
     private var header: FeedUIModel? = null
     // generate random UUID every refresh call to force create new PagingData
     private val refreshIdFlow = MutableStateFlow<String>("")
-    private val _feedQuery: Flow<FeedQuery?> = styleQuery.combine(heightQuery) { style, height ->
+    private val _feedQuery: Flow<FeedQuery?> = _styleQuery.combine(heightQuery) { style, height ->
         FeedQuery(
             style = style,
             height = height
@@ -71,7 +72,6 @@ class FeedListViewModel @Inject constructor(private val feedRepository: FeedRepo
     }
 
     fun setStyle(styleType: StyleType) {
-        styleQuery.value = styleType
-
+        _styleQuery.value = styleType
     }
 }

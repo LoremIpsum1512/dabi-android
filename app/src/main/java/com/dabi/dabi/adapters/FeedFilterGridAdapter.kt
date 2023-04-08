@@ -10,13 +10,13 @@ import com.dabi.dabi.R
 import com.dabi.dabi.databinding.ToogleButtonBinding
 import timber.log.Timber
 
-class FeedFilterGridAdapter<T>(val list: List<FilterEntry<T>>, val onClick: (index: Int) -> Unit) :
+class FeedFilterGridAdapter<T>(val initialIndex: Int = -1 ,val list: List<FilterEntry<T>>, val onClick: (index: Int) -> Unit) :
     BaseAdapter() {
     override fun getCount(): Int {
         return list.size
     }
 
-    private var selectedIndex = -1
+    private var selectedIndex = initialIndex
 
     override fun getItem(index: Int): FilterEntry<T> {
         return list[index]

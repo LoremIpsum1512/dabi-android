@@ -45,6 +45,7 @@ class ModalBottomSheet(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val feedFilterAdapter = FeedFilterGridAdapter(
+            initialIndex = StyleType.values().indexOf(feedListViewModel.styleType.value),
             list = StyleType.values().map { it.asFilterEntry() },
         ) { index ->
             val style = StyleType.values()[index]
