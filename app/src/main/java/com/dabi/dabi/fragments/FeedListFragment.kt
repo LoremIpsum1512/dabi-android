@@ -23,6 +23,7 @@ import com.dabi.dabi.databinding.FragmentFeedListBinding
 import com.dabi.dabi.adapters.FeedClickEvent
 import com.dabi.dabi.adapters.FeedListAdapter
 import com.dabi.dabi.fragments.FeedDetailFragmentDirections
+import com.dabi.dabi.fragments.ModalBottomSheet
 import com.dabi.dabi.viewmodels.FeedListViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
@@ -70,7 +71,11 @@ class FeedListFragment : Fragment() {
                     viewModel = viewModelFactory.create(FeedListViewModel::class.java)
                     val layout = HomeFeedListLayoutFactory(
                         getItemViewType = { feedListAdapter.getItemViewType(it) },
-                        context = context
+                        context = context,
+                        event = ShowModalEvent{
+                            val bottomSheet = ModalBottomSheet(viewModel)
+                            bottomSheet.show(parentFragmentManager, ModalBottomSheet.TAG)
+                        }
                     )
                     viewModel.setHeaderUiModel(layout.header!!)
                     binding.feedList.apply {

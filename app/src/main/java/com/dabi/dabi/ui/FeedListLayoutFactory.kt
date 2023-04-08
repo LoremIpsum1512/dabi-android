@@ -35,8 +35,11 @@ class DefaultFeedListLayoutFactory(
 class HomeFeedListLayoutFactory(
     getItemViewType: (Int) -> Int,
     context: Context,
+    event: ShowModalEvent
 ) : FeedListLayoutFactory() {
-    override var header: FeedUIModel? = FeedUIModel.HomeHeader
+    override var header: FeedUIModel? = FeedUIModel.HomeHeader(
+        showModalEvent = event
+    )
 
     override var layoutManager: RecyclerView.LayoutManager = GridLayoutManager(
         context, 2

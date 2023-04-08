@@ -22,14 +22,19 @@ class FeedItemViewHolder(
     }
 }
 
+class ShowModalEvent(val callback: () -> Unit) {
+    fun onClick() = callback()
+}
+
 class HomeHeaderViewHolder(
     private val binding: FragmentHomeHeaderBinding,
 ) :
     RecyclerView.ViewHolder(binding.root) {
-    fun bind() {
+    fun bind(showModalEvent :ShowModalEvent) {
         binding.fooBtn.setOnClickListener {
-            val bottomSheet = ModalBottomSheet(feedListViewModel)
-            bottomSheet.show(parentFragmentManager, ModalBottomSheet.TAG)
+            showModalEvent.onClick()
+           /* val bottomSheet = ModalBottomSheet(feedListViewModel)
+            bottomSheet.show(parentFragmentManager, ModalBottomSheet.TAG)*/
         }
     }
 }

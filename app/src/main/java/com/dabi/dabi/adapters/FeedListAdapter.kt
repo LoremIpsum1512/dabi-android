@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.dabi.dabi.FeedItemViewHolder
 import com.dabi.dabi.HomeHeaderViewHolder
 import com.dabi.dabi.R
+import com.dabi.dabi.ShowModalEvent
 import com.dabi.dabi.databinding.FeedListItemBinding
 import com.dabi.dabi.data.Feed
 import com.dabi.dabi.databinding.FragmentHomeHeaderBinding
@@ -17,7 +18,7 @@ import com.dabi.dabi.databinding.FragmentHomeHeaderBinding
 sealed class FeedUIModel {
     class ImageItem(val feed: Feed) : FeedUIModel()
 
-    class HomeHeader() : FeedUIModel()
+    class HomeHeader(val showModalEvent: ShowModalEvent) : FeedUIModel()
 }
 
 class FeedListAdapter(private val clickEvent: FeedClickEvent) :
@@ -76,7 +77,7 @@ class FeedListAdapter(private val clickEvent: FeedClickEvent) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (val uiModel = getItem(position)) {
             is FeedUIModel.ImageItem -> (holder as FeedItemViewHolder).bind(uiModel.feed)
-           is FeedUIModel.HomeHeader -> (holder as HomeHeaderViewHolder).bind()
+           is FeedUIModel.HomeHeader -> (holder as HomeHeaderViewHolder).bind(uiModel.showModalEvent)
             null -> throw NotImplementedError()
         }
 
