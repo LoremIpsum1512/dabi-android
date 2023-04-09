@@ -7,26 +7,62 @@
 
     </data>
 
-    <FrameLayout
+    <ScrollView
         android:id="@+id/standard_bottom_sheet"
         style="?attr/bottomSheetStyle"
-        android:theme="@style/Theme.Dabi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
+        android:theme="@style/Theme.Dabi"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-        <GridView
-            android:clipToPadding="false"
-            android:id="@+id/feed_group_filter"
-            android:paddingHorizontal="@dimen/spacing_lg"
-            tools:listitem="@layout/toogle_button"
-            android:horizontalSpacing="@dimen/spacing_md"
-            android:verticalSpacing="@dimen/spacing_md"
-            android:numColumns="2"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        </GridView>
-    </FrameLayout>
+            <TextView
+                style="@style/TextAppearance.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="@dimen/spacing_md"
+                android:paddingStart="@dimen/spacing_lg"
+                android:text="Chiều cao"
+                tools:ignore="HardcodedText" />
+
+            <com.dabi.dabi.fragments.ExpandableHeightGridView
+                android:id="@+id/feed_group_height_filter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:horizontalSpacing="@dimen/spacing_md"
+                android:nestedScrollingEnabled="true"
+                android:numColumns="2"
+                android:paddingHorizontal="@dimen/spacing_lg"
+                android:verticalSpacing="@dimen/spacing_md"
+                tools:listitem="@layout/toogle_button" />
+
+            <TextView
+                style="@style/TextAppearance.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="@dimen/spacing_md"
+                android:paddingStart="@dimen/spacing_lg"
+                android:text="Phong cách"
+                tools:ignore="HardcodedText" />
+
+            <com.dabi.dabi.fragments.ExpandableHeightGridView
+                android:id="@+id/feed_style_filter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:horizontalSpacing="@dimen/spacing_md"
+                android:nestedScrollingEnabled="true"
+                android:numColumns="2"
+                android:paddingHorizontal="@dimen/spacing_lg"
+                android:verticalSpacing="@dimen/spacing_md"
+                tools:listitem="@layout/toogle_button" />
+
+        </LinearLayout>
+    </ScrollView>
 </layout>

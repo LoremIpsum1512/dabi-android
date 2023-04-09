@@ -1,25 +1,15 @@
 package com.dabi.dabi.fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import com.dabi.dabi.MainActivity
-import com.dabi.dabi.R
 import com.dabi.dabi.adapters.FeedFilterGridAdapter
+import com.dabi.dabi.data.HeightQueryValue
 import com.dabi.dabi.data.StyleType
 import com.dabi.dabi.databinding.ModalBottomSheetBinding
-import com.dabi.dabi.di.AppViewModelFactory
 import com.dabi.dabi.viewmodels.FeedListViewModel
-import com.dabi.dabi.viewmodels.HomeViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class ModalBottomSheet(
     private val feedListViewModel: FeedListViewModel
@@ -44,6 +34,7 @@ class ModalBottomSheet(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val feedFilterAdapter = FeedFilterGridAdapter(
             initialIndex = StyleType.values().indexOf(feedListViewModel.styleType.value),
             list = StyleType.values().map { it.asFilterEntry() },
@@ -51,7 +42,27 @@ class ModalBottomSheet(
             val style = StyleType.values()[index]
             feedListViewModel.setStyle(style)
         }
-        binding.feedGroupFilter.adapter = feedFilterAdapter
+
+        val heights = listOf(
+            HeightQueryValue.Below150(),
+            HeightQueryValue.Below155(),
+            HeightQueryValue.Below160(),
+            HeightQueryValue.Below165(),
+            HeightQueryValue.Below170(),
+            HeightQueryValue.Over171(),
+        )
+
+        val heightType = feedListViewModel.heightType.value
+        val feedHeightFilterAdapter = FeedFilterGridAdapter(
+            initialIndex = heights.indexOfFirst { value -> value.range.first == heightType?.range?.first && value.range.second == heightType.range.second },
+            list = heights.map { it.asFilterEntry() }.toList()
+        ) { index ->
+            val height = heights[index]
+            feedListViewModel.setHeight(height)
+        }
+
+        binding.feedStyleFilter.adapter = feedFilterAdapter
+        binding.feedGroupHeightFilter.adapter = feedHeightFilterAdapter
     }
 
 
