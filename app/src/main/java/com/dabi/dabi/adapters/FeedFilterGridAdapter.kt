@@ -10,7 +10,11 @@ import com.dabi.dabi.R
 import com.dabi.dabi.databinding.ToogleButtonBinding
 import timber.log.Timber
 
-class FeedFilterGridAdapter<T>(val initialIndex: Int = -1 ,val list: List<FilterEntry<T>>, val onClick: (index: Int) -> Unit) :
+class FeedFilterGridAdapter<T>(
+    val initialIndex: Int = -1,
+    val list: List<FilterEntry<T>>,
+    val onClick: (index: Int) -> Unit
+) :
     BaseAdapter() {
     override fun getCount(): Int {
         return list.size
@@ -37,10 +41,20 @@ class FeedFilterGridAdapter<T>(val initialIndex: Int = -1 ,val list: List<Filter
 
         // binding.isSelected = index == selectedIndex
         if (index == selectedIndex) {
-            binding.toggleButton.setBackgroundColor(ContextCompat.getColor(parent.context, R.color.black))
+            binding.toggleButton.setBackgroundColor(
+                ContextCompat.getColor(
+                    parent.context,
+                    R.color.black
+                )
+            )
             binding.toggleButton.setTextColor(ContextCompat.getColor(parent.context, R.color.white))
-        }else {
-            binding.toggleButton.setBackgroundColor(ContextCompat.getColor(parent.context, R.color.bg_gray))
+        } else {
+            binding.toggleButton.setBackgroundColor(
+                ContextCompat.getColor(
+                    parent.context,
+                    R.color.bg_gray
+                )
+            )
             binding.toggleButton.setTextColor(ContextCompat.getColor(parent.context, R.color.black))
         }
         binding.toggleButton.text = item.name
@@ -52,7 +66,9 @@ class FeedFilterGridAdapter<T>(val initialIndex: Int = -1 ,val list: List<Filter
     }
 
     private fun onSelect(index: Int) {
-        selectedIndex = index
+        selectedIndex = if (selectedIndex == index)
+            -1
+        else index
         notifyDataSetChanged()
     }
 }

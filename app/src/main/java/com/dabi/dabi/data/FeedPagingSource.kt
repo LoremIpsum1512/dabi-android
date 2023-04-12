@@ -25,7 +25,9 @@ class FeedPagingSource(
                     nextPageNumber,
                     style = q.style,
                     maxHeight = q.maxHeight,
-                    minHeight = q.minHeight
+                    minHeight = q.minHeight,
+                    maxWeight = q.maxWeight,
+                    minWeight = q.minWeight
                 )
             } ?: feedService.getPagingFeed(nextPageNumber)
             LoadResult.Page(

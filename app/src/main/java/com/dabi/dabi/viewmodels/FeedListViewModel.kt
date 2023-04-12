@@ -18,15 +18,24 @@ class FeedListViewModel @Inject constructor(private val feedRepository: FeedRepo
     private val _heightQuery = MutableStateFlow<HeightQueryValue?>(null)
     val heightType = _heightQuery.asStateFlow()
 
+    private val _weightQuery = MutableStateFlow<WeightQueryValue?>(null)
+    val weightType = _weightQuery.asStateFlow()
+
     private var header: FeedUIModel? = null
+
     // generate random UUID every refresh call to force create new PagingData
     private val refreshIdFlow = MutableStateFlow<String>("")
-    private val _feedQuery: Flow<FeedQuery?> = _styleQuery.combine(_heightQuery) { style, height ->
-        FeedQuery(
-            style = style,
-            height = height
-        )
-    }.distinctUntilChanged()
+    private val _feedQuery: Flow<FeedQuery?> =
+        combine(_styleQuery, _heightQuery, _weightQuery) { style, height, weight ->
+            FeedQuery(
+                style = style,
+                height = height,
+                weight = weight
+            )
+        }
+
+
+            .distinctUntilChanged()
 
     private val _uiModelFlow = refreshIdFlow.combine(_feedQuery) { _, query ->
         query
@@ -52,11 +61,6 @@ class FeedListViewModel @Inject constructor(private val feedRepository: FeedRepo
             }
     }
 
-    init {
-
-
-    }
-
     fun refresh() {
         viewModelScope.launch {
             refreshIdFlow.emit(UUID.randomUUID().toString())
@@ -65,12 +69,6 @@ class FeedListViewModel @Inject constructor(private val feedRepository: FeedRepo
 
     fun setHeaderUiModel(uiModel: FeedUIModel) {
         header = uiModel
-
-//        viewModelScope.launch {
-//            _uiModelFlow.emit(
-//                _uiModelFlow.value.insertHeaderItem(item = uiModel)
-//            )
-//        }
     }
 
     fun setStyle(styleType: StyleType) {
@@ -79,5 +77,9 @@ class FeedListViewModel @Inject constructor(private val feedRepository: FeedRepo
 
     fun setHeight(heightType: HeightQueryValue) {
         _heightQuery.value = heightType
+    }
+
+    fun setWeight(weightType: WeightQueryValue) {
+        _weightQuery.value = weightType
     }
 }

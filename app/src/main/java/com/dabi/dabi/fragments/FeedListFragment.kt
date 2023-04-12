@@ -74,7 +74,7 @@ class FeedListFragment : Fragment() {
                         context = context,
                         event = ShowModalEvent{
                             val bottomSheet = ModalBottomSheet(viewModel)
-                            bocdttomSheet.show(parentFragmentManager, ModalBottomSheet.TAG)
+                            bottomSheet.show(parentFragmentManager, ModalBottomSheet.TAG)
                         }
                     )
                     viewModel.setHeaderUiModel(layout.header!!)

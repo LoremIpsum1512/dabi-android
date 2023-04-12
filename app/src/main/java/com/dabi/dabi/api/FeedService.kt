@@ -15,6 +15,8 @@ interface FeedService {
         @Query("is_valid") is_valid: Boolean = true,
         @Query("user_style") style: StyleType? = null,
         @Query("user__height_min") minHeight: Int? = null,
-        @Query("user__height_max") maxHeight: Int? = null
+        @Query("user__height_max") maxHeight: Int? = null,
+        @Query("user__weight_min") minWeight: Int? = null,
+        @Query("user__weight_max") maxWeight: Int? = null,
     ): PagingResponse<Feed>
 }
