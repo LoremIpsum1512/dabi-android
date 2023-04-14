@@ -9,6 +9,14 @@
         <item name="cornerRadius">0dp</item>
     </style>
 
+    <style name="TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.TextButton</item>
+        <item name="android:textAppearance">@style/TextAppearance.H4</item>
+        <item name="elevation">0dp</item>
+        <item name="android:outlineProvider">none</item>
+        <item name="cornerRadius">0dp</item>
+    </style>
+
     <style name="ToggleButton" parent="DefaultButton">
         <item name="cornerRadius">20dp</item>
         <item name="android:insetBottom">0dp</item>
@@ -34,4 +42,9 @@
         <item name="colorPrimary">@color/component_gray</item>
         <item name="colorOnPrimary">@color/black</item>
     </style>
+
+    <style name="ThemeOverlay.TextButton" parent="">
+        <item name="colorPrimary">@color/primary</item>
+    </style>
+
 </resources>

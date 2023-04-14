@@ -8,23 +8,31 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class FeedFilterBottomSheetViewModel : ViewModel() {
-    private val _selectedStyle = MutableStateFlow<StyleType?>(null)
-    val selectedStyle = _selectedStyle.asStateFlow()
-    private val _selectedHeight = MutableStateFlow<HeightQueryValue?>(null)
-    val selectedHeight = _selectedHeight.asStateFlow()
+//    private val _selectedStyle = MutableStateFlow<StyleType?>(null)
+//    val selectedStyle = _selectedStyle.asStateFlow()
+//    private val _selectedHeight = MutableStateFlow<HeightQueryValue?>(null)
+//    val selectedHeight = _selectedHeight.asStateFlow()
+//
+//    private val _selectedWeight = MutableStateFlow<WeightQueryValue?>(null)
+//    val selectedWeight = _selectedWeight.asStateFlow()
 
-    private val _selectedWeight = MutableStateFlow<WeightQueryValue?>(null)
-    val selectedWeight = _selectedWeight.asStateFlow()
+//    fun setStyle(style: StyleType?) {
+//        _selectedStyle.value = style
+//    }
 
-    fun setStyle(style: StyleType?) {
-        _selectedStyle.value = style
-    }
+//    fun setHeight(height: HeightQueryValue?) {
+//        _selectedHeight.value = height
+//    }
+//
+//    fun setWeight(weight: WeightQueryValue?) {
+//        _selectedWeight.value = weight
+//    }
+//
+//    fun reset(){
+//        _selectedHeight.value = null
+//        _selectedWeight.value = null
+//        // _selectedStyle.value = null
+//    }
 
-    fun setHeight(height: HeightQueryValue?) {
-        _selectedHeight.value = height
-    }
 
-    fun setWeight(weight: WeightQueryValue?) {
-        _selectedWeight.value = weight
-    }
 }

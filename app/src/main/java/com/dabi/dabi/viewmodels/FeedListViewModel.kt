@@ -71,15 +71,15 @@ class FeedListViewModel @Inject constructor(private val feedRepository: FeedRepo
         header = uiModel
     }
 
-    fun setStyle(styleType: StyleType) {
+    fun setStyle(styleType: StyleType?) {
         _styleQuery.value = styleType
     }
 
-    fun setHeight(heightType: HeightQueryValue) {
+    fun setHeight(heightType: HeightQueryValue?) {
         _heightQuery.value = heightType
     }
 
-    fun setWeight(weightType: WeightQueryValue) {
+    fun setWeight(weightType: WeightQueryValue?) {
         _weightQuery.value = weightType
     }
 }

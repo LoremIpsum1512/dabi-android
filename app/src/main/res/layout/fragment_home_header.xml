@@ -18,6 +18,7 @@
         <!--            android:layout_height="280dp"-->
         <!--            android:background="@color/bg_gray" />-->
         <Button
+            style="@style/TextButton"
             android:text="lorem ipsum"
             android:id="@+id/foo_btn"
             android:layout_width="match_parent"

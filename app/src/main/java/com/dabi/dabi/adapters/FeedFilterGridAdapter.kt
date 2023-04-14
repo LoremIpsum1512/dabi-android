@@ -12,8 +12,7 @@ import timber.log.Timber
 
 class FeedFilterGridAdapter<T>(
     val initialIndex: Int = -1,
-    val list: List<FilterEntry<T>>,
-    val onClick: (index: Int) -> Unit
+    val list: List<FilterEntry<T>>
 ) :
     BaseAdapter() {
     override fun getCount(): Int {
@@ -21,6 +20,16 @@ class FeedFilterGridAdapter<T>(
     }
 
     private var selectedIndex = initialIndex
+
+    val currentValue : T?
+    get() {
+        if(selectedIndex == -1) return null
+        return getItem(selectedIndex).value
+    }
+    public fun unSelect(){
+        selectedIndex = -1
+        notifyDataSetChanged()
+    }
 
     override fun getItem(index: Int): FilterEntry<T> {
         return list[index]
@@ -59,7 +68,6 @@ class FeedFilterGridAdapter<T>(
         }
         binding.toggleButton.text = item.name
         binding.toggleButton.setOnClickListener {
-            onClick(index)
             onSelect(index)
         }
         return binding.root
