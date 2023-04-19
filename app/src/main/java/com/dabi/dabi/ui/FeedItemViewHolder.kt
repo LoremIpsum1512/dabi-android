@@ -33,8 +33,6 @@ class HomeHeaderViewHolder(
     fun bind(showModalEvent :ShowModalEvent) {
         binding.fooBtn.setOnClickListener {
             showModalEvent.onClick()
-           /* val bottomSheet = ModalBottomSheet(feedListViewModel)
-            bottomSheet.show(parentFragmentManager, ModalBottomSheet.TAG)*/
         }
     }
 }

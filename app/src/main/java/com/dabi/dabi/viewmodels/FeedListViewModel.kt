@@ -33,8 +33,6 @@ class FeedListViewModel @Inject constructor(private val feedRepository: FeedRepo
                 weight = weight
             )
         }
-
-
             .distinctUntilChanged()
 
     private val _uiModelFlow = refreshIdFlow.combine(_feedQuery) { _, query ->

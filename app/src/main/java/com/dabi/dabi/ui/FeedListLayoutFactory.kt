@@ -33,7 +33,7 @@ class DefaultFeedListLayoutFactory(
 }
 
 class HomeFeedListLayoutFactory(
-    getItemViewType: (Int) -> Int,
+    getItemViewType: (Int) -> Int?,
     context: Context,
     event: ShowModalEvent
 ) : FeedListLayoutFactory() {
@@ -46,7 +46,12 @@ class HomeFeedListLayoutFactory(
     ).apply {
         spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
-                return when (getItemViewType(position)) {
+                val type = try{
+                    getItemViewType(position)
+                }catch (e:Exception){
+                    null
+                }
+                return when (type) {
                     R.layout.fragment_home_feed_filters -> 2
                     else -> 1
                 }

@@ -70,9 +70,10 @@ class FeedListFragment : Fragment() {
                     (activity as MainActivity).homeComponent.inject(this)
                     viewModel = viewModelFactory.create(FeedListViewModel::class.java)
                     val layout = HomeFeedListLayoutFactory(
-                        getItemViewType = { feedListAdapter.getItemViewType(it) },
+                        getItemViewType = {
+                            feedListAdapter.getItemViewType(it) },
                         context = context,
-                        event = ShowModalEvent{
+                        event = ShowModalEvent {
                             val bottomSheet = ModalBottomSheet(viewModel)
                             bottomSheet.show(parentFragmentManager, ModalBottomSheet.TAG)
                         }
@@ -119,6 +120,14 @@ class FeedListFragment : Fragment() {
         return binding.root
     }
 
+    private val getItemCount: Int
+        get() {
+            return when (parentScope) {
+                FeedListParentScope.Home -> feedListAdapter.itemCount - 1
+                else -> feedListAdapter.itemCount
+            }
+        }
+
     private fun bindList(binding: FragmentFeedListBinding, context: Context) {
         val mainNavController =
             Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
@@ -163,7 +172,7 @@ class FeedListFragment : Fragment() {
                         .collectLatest { loadStates ->
                             Timber.d("loadStateFlow ${loadStates}")
                             if (loadStates is LoadState.Loading) {
-                                if (feedListAdapter.itemCount <= 0)
+                                if (getItemCount <= 0)
                                     binding.feedListPlaceholder.isVisible =
                                         true
                                 else {
@@ -174,13 +183,27 @@ class FeedListFragment : Fragment() {
                                 if (swipeLayout.isRefreshing) swipeLayout.isRefreshing = false
                             }
 
-                            binding.fragmentContainerView.isVisible =
-                                loadStates is LoadState.Error
+                            binding.fragmentContainerView.isVisible = false
+
                             if (loadStates is LoadState.Error) {
+                                binding.fragmentContainerView.isVisible = true
                                 val parcel =
                                     EmptyFragmentParcelable.fromException(
-                                        loadStates.error
-                                    )
+                                        throwable = loadStates.error
+                                    ) {
+                                        viewModel.refresh()
+                                    }
+                                childFragmentManager.setFragmentResult(
+                                    EmptyFragment.requestKey,
+                                    bundleOf(EmptyFragment.argsKey to parcel)
+                                )
+                            }
+                            if (loadStates is LoadState.NotLoading && getItemCount <= 0) {
+                                binding.fragmentContainerView.isVisible = true
+                                val parcel = EmptyFragmentParcelable(
+                                    title = "Không tìm thấy bài viết",
+                                    imageResource = R.drawable.info_post
+                                )
                                 childFragmentManager.setFragmentResult(
                                     EmptyFragment.requestKey,
                                     bundleOf(EmptyFragment.argsKey to parcel)

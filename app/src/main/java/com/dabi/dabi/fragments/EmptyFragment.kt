@@ -68,11 +68,12 @@ class EmptyFragmentParcelable(
     val retry: (() -> Unit)? = null,
 ) : Parcelable {
     companion object {
-        fun fromException(throwable: Throwable): EmptyFragmentParcelable {
+        fun fromException(throwable: Throwable, retry: (() -> Unit)? = null): EmptyFragmentParcelable {
             val meaning = HandledException.of(throwable).meaning
             return EmptyFragmentParcelable(
                 title = meaning.title,
                 description = meaning.description,
+                retry = retry
             )
         }
     }

@@ -7,10 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.dabi.dabi.FeedItemViewHolder
-import com.dabi.dabi.HomeHeaderViewHolder
-import com.dabi.dabi.R
-import com.dabi.dabi.ShowModalEvent
+import com.dabi.dabi.*
 import com.dabi.dabi.databinding.FeedListItemBinding
 import com.dabi.dabi.data.Feed
 import com.dabi.dabi.databinding.FragmentHomeHeaderBinding
@@ -42,7 +39,13 @@ class FeedListAdapter(private val clickEvent: FeedClickEvent) :
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when (getItem(position)) {
+        val item = try {
+            getItem(position)
+        } catch (e: java.lang.IndexOutOfBoundsException) {
+            null
+        }
+
+        return when (item) {
             is FeedUIModel.ImageItem -> R.layout.feed_list_item
             is FeedUIModel.HomeHeader -> R.layout.fragment_home_feed_filters
             else -> throw UnsupportedOperationException("Unknown view")

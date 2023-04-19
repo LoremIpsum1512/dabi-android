@@ -43,22 +43,22 @@ sealed class HeightQueryValue(open val range: Pair<Int, Int?>, open val name: St
 
     class Below160(
         override val range: Pair<Int, Int?> = Pair(156, 160),
-        override val name: String = "151~155cm"
+        override val name: String = "156~160cm"
     ) : HeightQueryValue(range, name)
 
     class Below165(
         override val range: Pair<Int, Int?> = Pair(161, 165),
-        override val name: String = "151~155cm"
+        override val name: String = "161~165cm"
     ) : HeightQueryValue(range, name)
 
     class Below170(
         override val range: Pair<Int, Int?> = Pair(166, 170),
-        override val name: String = "151~155cm"
+        override val name: String = "166~170cm"
     ) : HeightQueryValue(range, name)
 
     class Over171(
         override val range: Pair<Int, Int?> = Pair(171, null),
-        override val name: String = "151~155cm"
+        override val name: String = "171cm"
     ) : HeightQueryValue(range, name)
 
     fun asFilterEntry(): FilterEntry<HeightQueryValue> {
