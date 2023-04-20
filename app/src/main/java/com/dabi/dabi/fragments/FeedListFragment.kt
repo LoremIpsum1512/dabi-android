@@ -1,4 +1,4 @@
-package com.dabi.dabi
+package com.dabi.dabi.fragments
 
 import FeedListLoadStateAdapter
 import android.content.Context
@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -18,14 +19,14 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.Navigation
 import androidx.paging.LoadState
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.dabi.dabi.*
 import com.dabi.dabi.adapters.FeedListPlaceholderAdapter
 import com.dabi.dabi.databinding.FragmentFeedListBinding
 import com.dabi.dabi.adapters.FeedClickEvent
 import com.dabi.dabi.adapters.FeedListAdapter
-import com.dabi.dabi.fragments.FeedDetailFragmentDirections
-import com.dabi.dabi.fragments.ModalBottomSheet
 import com.dabi.dabi.viewmodels.FeedListViewModel
-import kotlinx.coroutines.flow.collect
+import com.google.android.material.badge.BadgeDrawable
+import com.google.android.material.badge.BadgeUtils
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -47,7 +48,8 @@ class FeedListFragment : Fragment() {
     lateinit var binding: FragmentFeedListBinding
     lateinit var swipeLayout: SwipeRefreshLayout
     private var parentScope: FeedListParentScope = FeedListParentScope.Self
-    private lateinit var layoutFactory: FeedListLayoutFactory;
+    lateinit var layoutFactory: FeedListLayoutFactory
+    lateinit var badgeDrawable: BadgeDrawable
 
     companion object {
         const val feed_list_request_key = "feedListRequestKey"
@@ -66,39 +68,16 @@ class FeedListFragment : Fragment() {
                 @Suppress("DEPRECATION") bundle.getSerializable(parent_scope_key) as FeedListParentScope
             }
             when (parentScope) {
+
                 FeedListParentScope.Home -> {
-                    (activity as MainActivity).homeComponent.inject(this)
-                    viewModel = viewModelFactory.create(FeedListViewModel::class.java)
-                    val layout = HomeFeedListLayoutFactory(
-                        getItemViewType = {
-                            feedListAdapter.getItemViewType(it) },
-                        context = context,
-                        event = ShowModalEvent {
-                            val bottomSheet = ModalBottomSheet(viewModel)
-                            bottomSheet.show(parentFragmentManager, ModalBottomSheet.TAG)
-                        }
-                    )
-                    viewModel.setHeaderUiModel(layout.header!!)
-                    binding.feedList.apply {
-                        for (i in (0 until this.itemDecorationCount)) {
-                            val itemDeco = this.getItemDecorationAt(i)
-                            if (itemDeco == layoutFactory.itemDecoration) {
-                                this.removeItemDecorationAt(i)
-                            }
-                        }
-                        this.addItemDecoration(layout.itemDecoration)
-                        this.layoutManager = layout.layoutManager
-                    }
+                    bindHomeFeedList(context)
                 }
-                else -> {
-
-                }
+                else -> {}
             }
-
         }
-
     }
 
+    @androidx.annotation.OptIn(com.google.android.material.badge.ExperimentalBadgeUtils::class)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -107,7 +86,7 @@ class FeedListFragment : Fragment() {
         swipeLayout = binding.swiperefresh
         container?.let {
             layoutFactory = DefaultFeedListLayoutFactory(it.context)
-            bindList(context = it.context, binding = binding)
+            bindList(binding = binding)
             childFragmentManager.beginTransaction()
                 .add(R.id.fragment_container_view, EmptyFragment())
                 .commit()
@@ -115,6 +94,25 @@ class FeedListFragment : Fragment() {
                 viewModel.refresh()
                 feedListAdapter.refresh()
 
+            }
+            viewLifecycleOwner.lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    if (parentScope == FeedListParentScope.Home)
+                        viewModel.filterCountFlow.distinctUntilChanged().collectLatest { count ->
+                            if (count > 0) {
+                                badgeDrawable.number = count
+                                BadgeUtils.attachBadgeDrawable(
+                                    badgeDrawable,
+                                    binding.filterFab
+                                )
+                            } else {
+                                BadgeUtils.detachBadgeDrawable(
+                                    badgeDrawable,
+                                    binding.filterFab
+                                )
+                            }
+                        }
+                }
             }
         }
         return binding.root
@@ -128,7 +126,7 @@ class FeedListFragment : Fragment() {
             }
         }
 
-    private fun bindList(binding: FragmentFeedListBinding, context: Context) {
+    private fun bindList(binding: FragmentFeedListBinding) {
         val mainNavController =
             Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
 
@@ -215,4 +213,47 @@ class FeedListFragment : Fragment() {
         }
     }
 
+
+
+}
+fun FeedListFragment.bindFab(context: Context){
+    badgeDrawable = BadgeDrawable.create(context)
+    binding.filterFab.isVisible = true
+    binding.filterFab.setOnClickListener {
+        val bottomSheet = ModalBottomSheet(viewModel)
+        bottomSheet.show(parentFragmentManager, ModalBottomSheet.TAG)
+    }
+    binding.filterFab.viewTreeObserver.addOnGlobalLayoutListener {
+        badgeDrawable.horizontalOffset = 24
+        badgeDrawable.verticalOffset = 24
+        badgeDrawable.backgroundColor =
+            ContextCompat.getColor(context, R.color.primary)
+    }
+}
+
+fun FeedListFragment.bindHomeFeedList(context: Context) {
+    (activity as MainActivity).homeComponent.inject(this)
+    viewModel = viewModelFactory.create(FeedListViewModel::class.java)
+    val layout = HomeFeedListLayoutFactory(
+        getItemViewType = {
+            feedListAdapter.getItemViewType(it)
+        },
+        context = context,
+        event = ShowModalEvent {
+            val bottomSheet = ModalBottomSheet(viewModel)
+            bottomSheet.show(parentFragmentManager, ModalBottomSheet.TAG)
+        }
+    )
+    viewModel.setHeaderUiModel(layout.header!!)
+    binding.feedList.apply {
+        for (i in (0 until this.itemDecorationCount)) {
+            val itemDeco = this.getItemDecorationAt(i)
+            if (itemDeco == layoutFactory.itemDecoration) {
+                this.removeItemDecorationAt(i)
+            }
+        }
+        this.addItemDecoration(layout.itemDecoration)
+        this.layoutManager = layout.layoutManager
+    }
+    bindFab(context)
 }

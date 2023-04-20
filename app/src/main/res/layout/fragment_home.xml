@@ -23,4 +23,5 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:layout="@layout/fragment_feed_list" />
     </LinearLayout>
+
 </layout>

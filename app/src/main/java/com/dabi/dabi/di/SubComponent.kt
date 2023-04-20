@@ -1,6 +1,6 @@
 package com.dabi.dabi.di
 
-import com.dabi.dabi.FeedListFragment
+import com.dabi.dabi.fragments.FeedListFragment
 import com.dabi.dabi.fragments.*
 import dagger.Subcomponent
 

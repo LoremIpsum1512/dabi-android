@@ -45,6 +45,15 @@ class FeedListViewModel @Inject constructor(private val feedRepository: FeedRepo
         initialValue = PagingData.empty()
     )
 
+    val filterCountFlow =
+        combine(_styleQuery, _heightQuery, _weightQuery) { style, height, weight ->
+            listOf(style != null, height != null, weight != null).fold(0) { acc, curr ->
+                if (curr)
+                    acc + 1
+                else
+                    acc
+            }
+        }
 
     val uiModelFlow: Flow<PagingData<FeedUIModel>> = _uiModelFlow
         .map { pagingData ->

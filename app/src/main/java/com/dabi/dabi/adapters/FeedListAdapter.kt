@@ -62,6 +62,9 @@ class FeedListAdapter(private val clickEvent: FeedClickEvent) :
                         parent,
                         false
                     )
+//                val layoutParams = binding.root.layoutParams
+//                layoutParams.height = (parent.height * 1).toInt()
+//                binding.root.layoutParams = layoutParams
                 FeedItemViewHolder(binding, clickEvent)
             }
             R.layout.fragment_home_feed_filters -> {
