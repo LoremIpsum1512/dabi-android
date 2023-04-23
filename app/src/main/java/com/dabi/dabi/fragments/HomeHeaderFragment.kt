@@ -39,7 +39,7 @@ class HomeHeaderFragment : Fragment() {
             container,
             false
         )
-        binding.fooBtn.setOnClickListener {
+        binding.filterButton.setOnClickListener {
             val bottomSheet = ModalBottomSheet(feedListViewModel)
             bottomSheet.show(parentFragmentManager, ModalBottomSheet.TAG)
         }

@@ -68,10 +68,11 @@ class FeedListFragment : Fragment() {
                 @Suppress("DEPRECATION") bundle.getSerializable(parent_scope_key) as FeedListParentScope
             }
             when (parentScope) {
+
                 FeedListParentScope.Home -> {
                     (activity as MainActivity).homeComponent.inject(this)
                     viewModel = viewModelFactory.create(FeedListViewModel::class.java)
-                    bindFab(context)
+                    // bindFab(context)
                 }
                 else -> {}
             }
@@ -96,25 +97,25 @@ class FeedListFragment : Fragment() {
                 feedListAdapter.refresh()
 
             }
-            viewLifecycleOwner.lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    if (parentScope == FeedListParentScope.Home)
-                        viewModel.filterCountFlow.distinctUntilChanged().collectLatest { count ->
-                            if (count > 0) {
-                                badgeDrawable.number = count
-                                BadgeUtils.attachBadgeDrawable(
-                                    badgeDrawable,
-                                    binding.filterFab
-                                )
-                            } else {
-                                BadgeUtils.detachBadgeDrawable(
-                                    badgeDrawable,
-                                    binding.filterFab
-                                )
-                            }
-                        }
-                }
-            }
+//            viewLifecycleOwner.lifecycleScope.launch {
+//                repeatOnLifecycle(Lifecycle.State.STARTED) {
+//                    if (parentScope == FeedListParentScope.Home)
+//                        viewModel.filterCountFlow.distinctUntilChanged().collectLatest { count ->
+//                            if (count > 0) {
+//                                badgeDrawable.number = count
+//                                BadgeUtils.attachBadgeDrawable(
+//                                    badgeDrawable,
+//                                    binding.filterFab
+//                                )
+//                            } else {
+//                                BadgeUtils.detachBadgeDrawable(
+//                                    badgeDrawable,
+//                                    binding.filterFab
+//                                )
+//                            }
+//                        }
+//                }
+//            }
         }
         return binding.root
     }
@@ -215,19 +216,19 @@ class FeedListFragment : Fragment() {
     }
 
 
-}
 
-fun FeedListFragment.bindFab(context: Context) {
-    badgeDrawable = BadgeDrawable.create(context)
-    binding.filterFab.isVisible = true
-    binding.filterFab.setOnClickListener {
-        val bottomSheet = ModalBottomSheet(viewModel)
-        bottomSheet.show(parentFragmentManager, ModalBottomSheet.TAG)
-    }
-    binding.filterFab.viewTreeObserver.addOnGlobalLayoutListener {
-        badgeDrawable.horizontalOffset = 24
-        badgeDrawable.verticalOffset = 24
-        badgeDrawable.backgroundColor =
-            ContextCompat.getColor(context, R.color.primary)
-    }
 }
+//fun FeedListFragment.bindFab(context: Context){
+//    badgeDrawable = BadgeDrawable.create(context)
+//    binding.filterFab.isVisible = true
+//    binding.filterFab.setOnClickListener {
+//        val bottomSheet = ModalBottomSheet(viewModel)
+//        bottomSheet.show(parentFragmentManager, ModalBottomSheet.TAG)
+//    }
+//    binding.filterFab.viewTreeObserver.addOnGlobalLayoutListener {
+//        badgeDrawable.horizontalOffset = 24
+//        badgeDrawable.verticalOffset = 24
+//        badgeDrawable.backgroundColor =
+//            ContextCompat.getColor(context, R.color.primary)
+//    }
+//}

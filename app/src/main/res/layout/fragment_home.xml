@@ -8,20 +8,37 @@
 
     </data>
 
-    <LinearLayout
-        android:orientation="vertical"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/home_appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/main.collapsing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#ffffff"
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                app:scrimAnimationDuration="0">
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/header_fcv"
+                    android:name="com.dabi.dabi.fragments.HomeHeaderFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:layout="@layout/fragment_home_header" />
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
         <androidx.fragment.app.FragmentContainerView
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:id="@+id/home_fragment_container_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout="@layout/fragment_feed_list" />
-    </LinearLayout>
-
+            tools:layout="@layout/fragment_feed_list"
+            />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

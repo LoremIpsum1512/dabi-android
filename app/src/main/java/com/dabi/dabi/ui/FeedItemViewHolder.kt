@@ -26,13 +26,13 @@ class ShowModalEvent(val callback: () -> Unit) {
     fun onClick() = callback()
 }
 
-class HomeHeaderViewHolder(
-    private val binding: FragmentHomeHeaderBinding,
-) :
-    RecyclerView.ViewHolder(binding.root) {
-    fun bind(showModalEvent :ShowModalEvent) {
-        binding.fooBtn.setOnClickListener {
-            showModalEvent.onClick()
-        }
-    }
-}
+//class HomeHeaderViewHolder(
+//    private val binding: FragmentHomeHeaderBinding,
+//) :
+//    RecyclerView.ViewHolder(binding.root) {
+//    fun bind(showModalEvent :ShowModalEvent) {
+//        binding.fooBtn.setOnClickListener {
+//            showModalEvent.onClick()
+//        }
+//    }
+//}

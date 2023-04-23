@@ -65,14 +65,14 @@ class FeedListAdapter(private val clickEvent: FeedClickEvent) :
 //                binding.root.layoutParams = layoutParams
                 FeedItemViewHolder(binding, clickEvent)
             }
-            R.layout.fragment_home_feed_filters -> {
-                val binding = FragmentHomeHeaderBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                )
-                HomeHeaderViewHolder(binding)
-            }
+//            R.layout.fragment_home_feed_filters -> {
+//                val binding = FragmentHomeHeaderBinding.inflate(
+//                    LayoutInflater.from(parent.context),
+//                    parent,
+//                    false
+//                )
+//                HomeHeaderViewHolder(binding)
+//            }
             else -> throw UnsupportedOperationException("Unknown viewType")
         }
 
