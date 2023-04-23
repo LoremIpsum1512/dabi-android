@@ -31,34 +31,34 @@ class DefaultFeedListLayoutFactory(
         }
     }
 }
-
-class HomeFeedListLayoutFactory(
-    getItemViewType: (Int) -> Int?,
-    context: Context,
-    event: ShowModalEvent
-) : FeedListLayoutFactory() {
-    override var header: FeedUIModel? = FeedUIModel.HomeHeader(
-        showModalEvent = event
-    )
-
-    override var layoutManager: RecyclerView.LayoutManager = GridLayoutManager(
-        context, 2
-    ).apply {
-        spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-            override fun getSpanSize(position: Int): Int {
-                val type = try{
-                    getItemViewType(position)
-                }catch (e:Exception){
-                    null
-                }
-                return when (type) {
-                    R.layout.fragment_home_feed_filters -> 2
-                    else -> 1
-                }
-            }
-        }
-    }
-
-    override var itemDecoration: RecyclerView.ItemDecoration = HomeFeedListDecoration()
-
-}
+//
+//class HomeFeedListLayoutFactory(
+//    getItemViewType: (Int) -> Int?,
+//    context: Context,
+//    event: ShowModalEvent
+//) : FeedListLayoutFactory() {
+//    override var header: FeedUIModel? = FeedUIModel.HomeHeader(
+//        showModalEvent = event
+//    )
+//
+//    override var layoutManager: RecyclerView.LayoutManager = GridLayoutManager(
+//        context, 2
+//    ).apply {
+//        spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+//            override fun getSpanSize(position: Int): Int {
+//                val type = try{
+//                    getItemViewType(position)
+//                }catch (e:Exception){
+//                    null
+//                }
+//                return when (type) {
+//                    R.layout.fragment_home_feed_filters -> 2
+//                    else -> 1
+//                }
+//            }
+//        }
+//    }
+//
+//    override var itemDecoration: RecyclerView.ItemDecoration = HomeFeedListDecoration()
+//
+//}

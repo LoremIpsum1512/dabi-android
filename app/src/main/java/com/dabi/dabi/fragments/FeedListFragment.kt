@@ -68,9 +68,10 @@ class FeedListFragment : Fragment() {
                 @Suppress("DEPRECATION") bundle.getSerializable(parent_scope_key) as FeedListParentScope
             }
             when (parentScope) {
-
                 FeedListParentScope.Home -> {
-                    bindHomeFeedList(context)
+                    (activity as MainActivity).homeComponent.inject(this)
+                    viewModel = viewModelFactory.create(FeedListViewModel::class.java)
+                    bindFab(context)
                 }
                 else -> {}
             }
@@ -159,7 +160,7 @@ class FeedListFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.uiModelFlow.collectLatest { pagingData ->
-                        Timber.d("feedFlow")
+                        Timber.d("uiModelFlow")
                         feedListAdapter.submitData(pagingData)
                     }
                 }
@@ -214,9 +215,9 @@ class FeedListFragment : Fragment() {
     }
 
 
-
 }
-fun FeedListFragment.bindFab(context: Context){
+
+fun FeedListFragment.bindFab(context: Context) {
     badgeDrawable = BadgeDrawable.create(context)
     binding.filterFab.isVisible = true
     binding.filterFab.setOnClickListener {
@@ -229,31 +230,4 @@ fun FeedListFragment.bindFab(context: Context){
         badgeDrawable.backgroundColor =
             ContextCompat.getColor(context, R.color.primary)
     }
-}
-
-fun FeedListFragment.bindHomeFeedList(context: Context) {
-    (activity as MainActivity).homeComponent.inject(this)
-    viewModel = viewModelFactory.create(FeedListViewModel::class.java)
-    val layout = HomeFeedListLayoutFactory(
-        getItemViewType = {
-            feedListAdapter.getItemViewType(it)
-        },
-        context = context,
-        event = ShowModalEvent {
-            val bottomSheet = ModalBottomSheet(viewModel)
-            bottomSheet.show(parentFragmentManager, ModalBottomSheet.TAG)
-        }
-    )
-    viewModel.setHeaderUiModel(layout.header!!)
-    binding.feedList.apply {
-        for (i in (0 until this.itemDecorationCount)) {
-            val itemDeco = this.getItemDecorationAt(i)
-            if (itemDeco == layoutFactory.itemDecoration) {
-                this.removeItemDecorationAt(i)
-            }
-        }
-        this.addItemDecoration(layout.itemDecoration)
-        this.layoutManager = layout.layoutManager
-    }
-    bindFab(context)
 }

@@ -21,8 +21,6 @@ class FeedListViewModel @Inject constructor(private val feedRepository: FeedRepo
     private val _weightQuery = MutableStateFlow<WeightQueryValue?>(null)
     val weightType = _weightQuery.asStateFlow()
 
-    private var header: FeedUIModel? = null
-
     // generate random UUID every refresh call to force create new PagingData
     private val refreshIdFlow = MutableStateFlow<String>("")
     private val _feedQuery: Flow<FeedQuery?> =
@@ -56,9 +54,6 @@ class FeedListViewModel @Inject constructor(private val feedRepository: FeedRepo
         }
 
     val uiModelFlow: Flow<PagingData<FeedUIModel>> = _uiModelFlow
-        .map { pagingData ->
-            header?.let { pagingData.insertHeaderItem(item = header!!) } ?: pagingData
-        }
         .cachedIn(viewModelScope)
 
     private fun getPagingUIModel(query: FeedQuery?): Flow<PagingData<FeedUIModel>> {
@@ -72,10 +67,6 @@ class FeedListViewModel @Inject constructor(private val feedRepository: FeedRepo
         viewModelScope.launch {
             refreshIdFlow.emit(UUID.randomUUID().toString())
         }
-    }
-
-    fun setHeaderUiModel(uiModel: FeedUIModel) {
-        header = uiModel
     }
 
     fun setStyle(styleType: StyleType?) {
