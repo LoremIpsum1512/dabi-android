@@ -18,5 +18,6 @@ interface FeedService {
         @Query("user__height_max") maxHeight: Int? = null,
         @Query("user__weight_min") minWeight: Int? = null,
         @Query("user__weight_max") maxWeight: Int? = null,
+        @Query("hashtags") hashtags: String? = null,
     ): PagingResponse<Feed>
 }

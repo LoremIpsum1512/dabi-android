@@ -19,6 +19,7 @@ package com.dabi.dabi.di
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.dabi.dabi.viewmodels.FeedListViewModel
+import com.dabi.dabi.viewmodels.HomeHeaderViewModel
 import com.dabi.dabi.viewmodels.HomeViewModel
 
 import dagger.Binds
@@ -33,7 +34,6 @@ abstract class ViewModelModule {
 @Suppress("unused")
 @Module
 abstract class HomeViewModule {
-
     @Binds
     abstract fun bindViewModelFactory(factory: AppViewModelFactory): ViewModelProvider.Factory
     @HomeScope
@@ -46,6 +46,12 @@ abstract class HomeViewModule {
     @IntoMap
     @ViewModelKey(FeedListViewModel::class)
     abstract fun bindFeedListViewModel(viewModel: FeedListViewModel): ViewModel
+
+    @HomeScope
+    @Binds
+    @IntoMap
+    @ViewModelKey(HomeHeaderViewModel::class)
+    abstract fun bindHomeHeaderViewModel(viewModel: HomeHeaderViewModel): ViewModel
 }
 
 

@@ -5,17 +5,20 @@ import com.dabi.dabi.adapters.FilterEntry
 data class FeedQuery(
     val height: HeightQueryValue?,
     val style: StyleType?,
-    val weight: WeightQueryValue?
+    val weight: WeightQueryValue?,
+    val hashtags: List<String>?
 ) {
     fun asQueryParams(): FeedQueryParams {
         val (minHeight, maxHeight) = height?.range ?: Pair(null, null)
         val (minWeight, maxWeight) = weight?.range ?: Pair(null, null)
+
         return FeedQueryParams(
             style = style,
             minHeight = minHeight,
             maxHeight = maxHeight,
             minWeight = minWeight,
             maxWeight = maxWeight,
+            hashtags = hashtags
         )
     }
 }
@@ -26,6 +29,7 @@ data class FeedQueryParams(
     val maxHeight: Int? = null,
     val minWeight: Int? = null,
     val maxWeight: Int? = null,
+    val hashtags: List<String>? = null
 )
 
 sealed class HeightQueryValue(open val range: Pair<Int, Int?>, open val name: String) {

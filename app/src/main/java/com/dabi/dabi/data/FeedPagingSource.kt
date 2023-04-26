@@ -21,13 +21,17 @@ class FeedPagingSource(
             val nextPageNumber = params.key ?: 0
             val response = query?.let { it ->
                 val q = it.asQueryParams()
+                val hashtags = q.hashtags?.let {
+                    it.joinToString(",")
+                }
                 feedService.getPagingFeed(
                     nextPageNumber,
                     style = q.style,
                     maxHeight = q.maxHeight,
                     minHeight = q.minHeight,
                     maxWeight = q.maxWeight,
-                    minWeight = q.minWeight
+                    minWeight = q.minWeight,
+                    hashtags = hashtags
                 )
             } ?: feedService.getPagingFeed(nextPageNumber)
             LoadResult.Page(

@@ -6,9 +6,11 @@ import com.dabi.dabi.data.local.AppDatabase
 import com.dabi.dabi.data.FeedDao
 import com.dabi.dabi.data.FeedRemoteKeyDao
 import com.dabi.dabi.api.FeedService
+import com.dabi.dabi.api.HashtagService
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
+import retrofit2.create
 import javax.inject.Singleton
 
 @Module(
@@ -21,6 +23,12 @@ class AppModule {
     @Provides
     fun feedService(retrofit: Retrofit): FeedService {
         return retrofit.create(FeedService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun hashtagService(retrofit: Retrofit): HashtagService{
+        return retrofit.create(HashtagService::class.java)
     }
 
     @Singleton

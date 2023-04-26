@@ -21,14 +21,23 @@ class FeedListViewModel @Inject constructor(private val feedRepository: FeedRepo
     private val _weightQuery = MutableStateFlow<WeightQueryValue?>(null)
     val weightType = _weightQuery.asStateFlow()
 
+    private val _hashtagsQuery = MutableStateFlow<List<String>?>(null)
+
+
     // generate random UUID every refresh call to force create new PagingData
     private val refreshIdFlow = MutableStateFlow<String>("")
     private val _feedQuery: Flow<FeedQuery?> =
-        combine(_styleQuery, _heightQuery, _weightQuery) { style, height, weight ->
+        combine(
+            _styleQuery,
+            _heightQuery,
+            _weightQuery,
+            _hashtagsQuery.debounce(200)
+        ) { style, height, weight, hashtags ->
             FeedQuery(
                 style = style,
                 height = height,
-                weight = weight
+                weight = weight,
+                hashtags = hashtags
             )
         }
             .distinctUntilChanged()
@@ -79,5 +88,17 @@ class FeedListViewModel @Inject constructor(private val feedRepository: FeedRepo
 
     fun setWeight(weightType: WeightQueryValue?) {
         _weightQuery.value = weightType
+    }
+
+    fun setHashtags(hashtags: List<String>) {
+        if (hashtags.isEmpty()) {
+            _hashtagsQuery.value = null
+            return
+        }
+        if (_hashtagsQuery.value != null && _hashtagsQuery.value!!.size == hashtags.size && _hashtagsQuery.value!!.containsAll(
+                hashtags
+            )
+        ) return
+        else _hashtagsQuery.value = hashtags
     }
 }
