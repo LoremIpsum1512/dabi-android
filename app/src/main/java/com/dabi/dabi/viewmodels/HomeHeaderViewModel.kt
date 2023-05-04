@@ -21,7 +21,7 @@ class HomeHeaderViewModel @Inject constructor(private val hashtagRepository: Has
         initialValue = Resource.Loading()
     )
 
-    fun foo() {
+    fun getHashtags() {
         viewModelScope.launch {
             try {
                 _hashtagsResourceFlow.value = Resource.Loading()

@@ -101,4 +101,9 @@ class FeedListViewModel @Inject constructor(private val feedRepository: FeedRepo
         ) return
         else _hashtagsQuery.value = hashtags
     }
+
+    val hashtags: List<String>?
+        get() {
+            return _hashtagsQuery.value
+        }
 }

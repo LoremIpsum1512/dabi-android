@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.generateViewId
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
@@ -39,9 +40,9 @@ class HomeHeaderFragment : Fragment() {
     private val homeHeaderViewModel by viewModels<HomeHeaderViewModel> { modelFactory }
 
     override fun onAttach(context: Context) {
-        super.onAttach(context)
         (activity as MainActivity).homeComponent.inject(this)
-        homeHeaderViewModel.foo()
+        super.onAttach(context)
+        homeHeaderViewModel.getHashtags()
     }
 
     override fun onCreateView(
@@ -59,28 +60,19 @@ class HomeHeaderFragment : Fragment() {
             bottomSheet.show(parentFragmentManager, ModalBottomSheet.TAG)
         }
         bindFab(requireContext())
-
-
-
         bindChip(inflater)
-
-
-
         return binding.root
     }
 
     private fun bindChip(inflater: LayoutInflater) {
-        binding.chipGroup.setOnCheckedStateChangeListener { group, ids ->
-            val hashtag = ids.map {
-                group.findViewById<Chip>(it).text.toString()
-            }.toList()
-            viewModel.setHashtags(hashtag)
-        }
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 homeHeaderViewModel.hashtagsResource.collectLatest {
                     binding.loadingView.isVisible = it is Resource.Loading
                     binding.chipView.isVisible = it is Resource.Success
+                    binding.chipGroup.removeAllViews()
+                    binding.chipGroup.isSingleSelection = false
+
                     if (it is Resource.Success) {
                         it.data.forEach { chipText ->
                             val chip = HashtagChipBinding.inflate(
@@ -88,10 +80,26 @@ class HomeHeaderFragment : Fragment() {
                                 binding.chipGroup,
                                 false
                             )
-                            (chip.root as Chip).text = chipText
+
+                            (chip.root as Chip).apply {
+                                this.text = chipText
+                            }
+
                             binding.chipGroup.addView(chip.root)
+                            val hashtags = viewModel.hashtags
+                            if (hashtags?.contains(chipText) == true) {
+                                binding.chipGroup.check(chip.root.id)
+                            }
                         }
-                        binding.chipGroup.invalidate();
+
+                        binding.chipGroup.invalidate()
+
+                        binding.chipGroup.setOnCheckedStateChangeListener { group, ids ->
+                            val hashtag = ids.map {
+                                group.findViewById<Chip>(it).text.toString()
+                            }.toList()
+                            viewModel.setHashtags(hashtag)
+                        }
                     }
                 }
             }
@@ -104,27 +112,22 @@ class HomeHeaderFragment : Fragment() {
         binding.filterButton.viewTreeObserver.addOnGlobalLayoutListener {
             badgeDrawable.horizontalOffset = 42
             badgeDrawable.verticalOffset = 42
+            BadgeUtils.attachBadgeDrawable(
+                badgeDrawable,
+                binding.filterButton
+            )
         }
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.filterCountFlow.distinctUntilChanged().mapLatest {
                     it > 0
                 }.collectLatest { filtered ->
-                    if (filtered) {
-                        BadgeUtils.attachBadgeDrawable(
-                            badgeDrawable,
-                            binding.filterButton
-                        )
-                    } else {
-                        BadgeUtils.detachBadgeDrawable(
-                            badgeDrawable,
-                            binding.filterButton
-                        )
-                    }
+                    badgeDrawable.isVisible = filtered
+
                 }
+
             }
 
         }
-
     }
 }
