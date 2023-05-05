@@ -4,12 +4,14 @@ import retrofit2.HttpException
 import timber.log.Timber
 import java.net.UnknownHostException
 
-sealed class HandledException {
+sealed class HandledException : Throwable(){
     class Network(val exception: HttpException) : HandledException()
 
     class Unknown(val throwable: Throwable) : HandledException()
 
     class Connection(val exception: UnknownHostException) : HandledException()
+
+    object InvalidPin : HandledException()
 
     val meaning: MeaningfulException
         get() = when (this) {
@@ -31,6 +33,9 @@ sealed class HandledException {
                     description = "Đã có lỗi kỳ cục xảy ra."
                 )
             }
+            is InvalidPin -> MeaningfulException(
+                title = "Product's pin invalid"
+            )
         }
 
     companion object {

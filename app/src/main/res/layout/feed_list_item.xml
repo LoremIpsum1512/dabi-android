@@ -9,21 +9,22 @@
             type="com.dabi.dabi.data.Feed" />
     </data>
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/feed_list_item"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/feed_item_height">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/feed_image"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
+            android:scaleType="fitXY"
             app:imageUrl="@{feed.thumbnailImage}"
             tools:src="@tools:sample/backgrounds/scenic"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-    </RelativeLayout>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintDimensionRatio="4:5"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,11 +1,7 @@
 package com.dabi.dabi.data
 
-import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.squareup.moshi.FromJson
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
-import com.squareup.moshi.ToJson
+import com.squareup.moshi.*
 import java.util.Date
 
 enum class MediaType(val value: Int) {
@@ -25,7 +21,7 @@ enum class MediaType(val value: Int) {
 }
 
 @JsonClass(generateAdapter = true)
-@Entity(tableName = "feeds")
+//@Entity(tableName = "feeds")
 data class Feed(
     @PrimaryKey val pk: Int,
     @Json(name = "thumbnail_image") val thumbnailImage: String,
@@ -35,6 +31,7 @@ data class Feed(
     @Json(name = "created_at") val createdAt: Date,
     val fetchedOrder: Int?,
     val video: String?,
+    @Json(name = "pin_position") val pinPositions: List<PinPosition>
 )
 
 class MediaTypeAdapter {
@@ -48,3 +45,4 @@ class MediaTypeAdapter {
         return MediaType.from(value)
     }
 }
+

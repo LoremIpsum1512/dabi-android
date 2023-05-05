@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi
 import com.dabi.dabi.BuildConfig
 import com.dabi.dabi.data.DateAdapter
 import com.dabi.dabi.data.MediaTypeAdapter
+import com.dabi.dabi.data.PinPositionAdapter
 import com.dabi.dabi.data.StyleType
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.EnumJsonAdapter
@@ -45,6 +46,7 @@ class NetworkModule {
             .add(KotlinJsonAdapterFactory())
             .add(MediaTypeAdapter())
             .add(DateAdapter())
+            .add(PinPositionAdapter())
             .add(StyleType::class.java, EnumJsonAdapter.create(StyleType::class.java))
             .build()
         return Retrofit.Builder()
@@ -72,7 +74,7 @@ class CredentialInterceptor : Interceptor {
 
     private fun currentUnixTime(): Long {
         val calendar = Calendar.getInstance()
-        calendar.add(Calendar.MINUTE,-3)
+        calendar.add(Calendar.MINUTE, -3)
         return calendar.time.time / 1000
     }
 

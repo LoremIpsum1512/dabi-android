@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="bottom_nav_height">56dp</dimen>
-    <dimen name="feed_item_height">300dp</dimen>
+    <dimen name="feed_item_height">197dp</dimen>
 
     <dimen name="spacing_xs">4dp</dimen>
     <dimen name="spacing_s">8dp</dimen>

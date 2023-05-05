@@ -3,7 +3,7 @@ package com.dabi.dabi.di
 import android.content.Context
 import androidx.room.Room
 import com.dabi.dabi.data.local.AppDatabase
-import com.dabi.dabi.data.FeedDao
+// import com.dabi.dabi.data.FeedDao
 import com.dabi.dabi.data.FeedRemoteKeyDao
 import com.dabi.dabi.api.FeedService
 import com.dabi.dabi.api.HashtagService
@@ -40,11 +40,11 @@ class AppModule {
         ).fallbackToDestructiveMigration().build()
     }
 
-    @Singleton
-    @Provides
-    fun provideFeedDao(db: AppDatabase): FeedDao {
-        return db.feedDao()
-    }
+//    @Singleton
+//    @Provides
+//    fun provideFeedDao(db: AppDatabase): FeedDao {
+//        return db.feedDao()
+//    }
 
     @Singleton
     @Provides

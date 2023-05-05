@@ -72,7 +72,6 @@ class FeedListFragment : Fragment() {
                 FeedListParentScope.Home -> {
                     (activity as MainActivity).homeComponent.inject(this)
                     viewModel = viewModelFactory.create(FeedListViewModel::class.java)
-                    // bindFab(context)
                 }
                 else -> {}
             }
