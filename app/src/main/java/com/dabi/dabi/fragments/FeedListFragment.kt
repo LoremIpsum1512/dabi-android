@@ -39,7 +39,6 @@ enum class FeedListParentScope(val value: String) {
     Self("self")
 }
 
-
 class FeedListFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -50,6 +49,7 @@ class FeedListFragment : Fragment() {
     private var parentScope: FeedListParentScope = FeedListParentScope.Self
     lateinit var layoutFactory: FeedListLayoutFactory
     lateinit var badgeDrawable: BadgeDrawable
+    private var initialFetched = false;
 
     companion object {
         const val feed_list_request_key = "feedListRequestKey"
@@ -97,36 +97,9 @@ class FeedListFragment : Fragment() {
                 feedListAdapter.refresh()
 
             }
-//            viewLifecycleOwner.lifecycleScope.launch {
-//                repeatOnLifecycle(Lifecycle.State.STARTED) {
-//                    if (parentScope == FeedListParentScope.Home)
-//                        viewModel.filterCountFlow.distinctUntilChanged().collectLatest { count ->
-//                            if (count > 0) {
-//                                badgeDrawable.number = count
-//                                BadgeUtils.attachBadgeDrawable(
-//                                    badgeDrawable,
-//                                    binding.filterFab
-//                                )
-//                            } else {
-//                                BadgeUtils.detachBadgeDrawable(
-//                                    badgeDrawable,
-//                                    binding.filterFab
-//                                )
-//                            }
-//                        }
-//                }
-//            }
         }
         return binding.root
     }
-
-    private val getItemCount: Int
-        get() {
-            return when (parentScope) {
-                FeedListParentScope.Home -> feedListAdapter.itemCount - 1
-                else -> feedListAdapter.itemCount
-            }
-        }
 
     private fun bindList(binding: FragmentFeedListBinding) {
         val mainNavController =
@@ -166,13 +139,13 @@ class FeedListFragment : Fragment() {
                     }
                 }
                 launch {
-                    feedListAdapter.loadStateFlow.map {
-                        it.refresh
-                    }.distinctUntilChanged()
-                        .collectLatest { loadStates ->
-                            Timber.d("loadStateFlow ${loadStates}")
-                            if (loadStates is LoadState.Loading) {
-                                if (getItemCount <= 0)
+                    feedListAdapter.loadStateFlow.distinctUntilChanged()
+                        .collectLatest { combinedLoadStates ->
+                            Timber.d("loadStateFlow $combinedLoadStates")
+                            val refreshState = combinedLoadStates.refresh
+
+                            if (refreshState is LoadState.Loading) {
+                                if (feedListAdapter.itemCount <= 0)
                                     binding.feedListPlaceholder.isVisible =
                                         true
                                 else {
@@ -185,11 +158,11 @@ class FeedListFragment : Fragment() {
 
                             binding.fragmentContainerView.isVisible = false
 
-                            if (loadStates is LoadState.Error) {
+                            if (refreshState is LoadState.Error) {
                                 binding.fragmentContainerView.isVisible = true
                                 val parcel =
                                     EmptyFragmentParcelable.fromException(
-                                        throwable = loadStates.error
+                                        throwable = refreshState.error
                                     ) {
                                         viewModel.refresh()
                                     }
@@ -198,7 +171,13 @@ class FeedListFragment : Fragment() {
                                     bundleOf(EmptyFragment.argsKey to parcel)
                                 )
                             }
-                            if (loadStates is LoadState.NotLoading && getItemCount <= 0) {
+
+                            if (
+                                initialFetched &&
+                                refreshState is LoadState.NotLoading
+                                && combinedLoadStates.append.endOfPaginationReached
+                                && feedListAdapter.itemCount <= 0
+                            ) {
                                 binding.fragmentContainerView.isVisible = true
                                 val parcel = EmptyFragmentParcelable(
                                     title = "Không tìm thấy bài viết",
@@ -208,6 +187,8 @@ class FeedListFragment : Fragment() {
                                     EmptyFragment.requestKey,
                                     bundleOf(EmptyFragment.argsKey to parcel)
                                 )
+                            } else {
+                                initialFetched = true
                             }
                         }
                 }
@@ -216,19 +197,4 @@ class FeedListFragment : Fragment() {
     }
 
 
-
 }
-//fun FeedListFragment.bindFab(context: Context){
-//    badgeDrawable = BadgeDrawable.create(context)
-//    binding.filterFab.isVisible = true
-//    binding.filterFab.setOnClickListener {
-//        val bottomSheet = ModalBottomSheet(viewModel)
-//        bottomSheet.show(parentFragmentManager, ModalBottomSheet.TAG)
-//    }
-//    binding.filterFab.viewTreeObserver.addOnGlobalLayoutListener {
-//        badgeDrawable.horizontalOffset = 24
-//        badgeDrawable.verticalOffset = 24
-//        badgeDrawable.backgroundColor =
-//            ContextCompat.getColor(context, R.color.primary)
-//    }
-//}
