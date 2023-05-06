@@ -2,6 +2,7 @@ package com.dabi.dabi.viewmodels
 
 import androidx.lifecycle.*
 import androidx.paging.*
+import androidx.recyclerview.widget.RecyclerView
 import com.dabi.dabi.adapters.FeedUIModel
 import com.dabi.dabi.data.*
 import kotlinx.coroutines.flow.*
@@ -21,11 +22,25 @@ class FeedListViewModel @Inject constructor(private val feedRepository: FeedRepo
     private val _weightQuery = MutableStateFlow<WeightQueryValue?>(null)
     val weightType = _weightQuery.asStateFlow()
 
-    private val _hashtagsQuery = MutableStateFlow<List<String>?>(null)
+    private val _scrollStateFlow = MutableStateFlow<Int>(RecyclerView.SCROLL_STATE_IDLE)
 
+    fun setScrollState(value: Int) {
+        viewModelScope.launch {
+            _scrollStateFlow.emit(value)
+        }
+    }
+
+    val scrollStateFlow = _scrollStateFlow.debounce(300).distinctUntilChanged().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000L),
+        initialValue = RecyclerView.SCROLL_STATE_IDLE
+    )
+
+    private val _hashtagsQuery = MutableStateFlow<List<String>?>(null)
 
     // generate random UUID every refresh call to force create new PagingData
     private val refreshIdFlow = MutableStateFlow<String>("")
+
     private val _feedQuery: Flow<FeedQuery?> =
         combine(
             _styleQuery,

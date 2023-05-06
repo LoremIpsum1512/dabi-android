@@ -1,12 +1,15 @@
 package com.dabi.dabi.fragments
 
 import FeedListLoadStateAdapter
+import android.animation.ValueAnimator
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -18,6 +21,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.Navigation
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.dabi.dabi.*
 import com.dabi.dabi.adapters.FeedListPlaceholderAdapter
@@ -50,6 +54,7 @@ class FeedListFragment : Fragment() {
     lateinit var layoutFactory: FeedListLayoutFactory
     lateinit var badgeDrawable: BadgeDrawable
     private var initialFetched = false;
+    private var valueAnimator = ValueAnimator.ofFloat(0f, 1f)
 
     companion object {
         const val feed_list_request_key = "feedListRequestKey"
@@ -60,6 +65,9 @@ class FeedListFragment : Fragment() {
         super.onAttach(context)
         (activity as MainActivity).feedListComponent.inject(this)
         viewModel = viewModelFactory.create(FeedListViewModel::class.java)
+        valueAnimator.interpolator = DecelerateInterpolator()
+        valueAnimator.duration = 320
+        valueAnimator.startDelay = 300
 
         setFragmentResultListener(feed_list_request_key) { _, bundle ->
             parentScope = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -97,6 +105,18 @@ class FeedListFragment : Fragment() {
 
             }
         }
+        binding.feedList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                viewModel.setScrollState(newState)
+
+                when(newState){
+                    RecyclerView.SCROLL_STATE_IDLE -> valueAnimator.start()
+                    RecyclerView.SCROLL_STATE_DRAGGING -> valueAnimator.reverse()
+                }
+            }
+        })
         return binding.root
     }
 
@@ -105,13 +125,14 @@ class FeedListFragment : Fragment() {
             Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
 
         feedListAdapter = FeedListAdapter(
-            FeedClickEvent { feedId ->
+            clickEvent = FeedClickEvent { feedId ->
                 mainNavController.navigate(
                     FeedDetailFragmentDirections.actionGlobalFeedDetailFragment(
                         feedId
                     )
                 )
-            }
+            },
+            valueAnimator = valueAnimator,
         )
 
         val loadStateAdapter = FeedListLoadStateAdapter(retry = feedListAdapter::retry)

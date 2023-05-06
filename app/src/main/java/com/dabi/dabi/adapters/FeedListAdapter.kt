@@ -1,6 +1,7 @@
 package com.dabi.dabi.adapters
 
 
+import android.animation.ValueAnimator
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -12,12 +13,16 @@ import com.dabi.dabi.*
 import com.dabi.dabi.databinding.FeedListItemBinding
 import com.dabi.dabi.data.Feed
 import com.dabi.dabi.databinding.FragmentHomeHeaderBinding
+import kotlinx.coroutines.flow.StateFlow
 
 sealed class FeedUIModel {
     class ImageItem(val feed: Feed) : FeedUIModel()
 }
 
-class FeedListAdapter(private val clickEvent: FeedClickEvent) :
+class FeedListAdapter(
+    private val clickEvent: FeedClickEvent,
+    private val valueAnimator: ValueAnimator
+) :
     PagingDataAdapter<FeedUIModel, ViewHolder>(DiffCallback) {
 
     companion object DiffCallback : DiffUtil.ItemCallback<FeedUIModel>() {
@@ -63,7 +68,7 @@ class FeedListAdapter(private val clickEvent: FeedClickEvent) :
 //                val layoutParams = binding.root.layoutParams
 //                layoutParams.height = (parent.height * 1).toInt()
 //                binding.root.layoutParams = layoutParams
-                FeedItemViewHolder(binding, clickEvent)
+                FeedItemViewHolder(binding, clickEvent,valueAnimator)
             }
 //            R.layout.fragment_home_feed_filters -> {
 //                val binding = FragmentHomeHeaderBinding.inflate(
@@ -81,7 +86,9 @@ class FeedListAdapter(private val clickEvent: FeedClickEvent) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (val uiModel = getItem(position)) {
             is FeedUIModel.ImageItem -> (holder as FeedItemViewHolder).bind(uiModel.feed)
-            null -> throw NotImplementedError()
+            else -> {
+                throw NotImplementedError()
+            }
         }
 
     }
