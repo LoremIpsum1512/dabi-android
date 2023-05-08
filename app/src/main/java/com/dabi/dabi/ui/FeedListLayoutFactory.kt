@@ -20,6 +20,7 @@ abstract class FeedListLayoutFactory {
 
 class DefaultFeedListLayoutFactory(
     context: Context,
+    getItemViewType: (Int) -> Int,
     override var header: FeedUIModel? = null,
     override var itemDecoration: RecyclerView.ItemDecoration = FeedItemDecoration()
 ) : FeedListLayoutFactory() {
@@ -27,7 +28,17 @@ class DefaultFeedListLayoutFactory(
         context, 2
     ).apply {
         spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-            override fun getSpanSize(position: Int): Int = 1
+            override fun getSpanSize(position: Int): Int {
+                val type = try {
+                    getItemViewType(position)
+                } catch (e: Exception) {
+                    null
+                }
+                return when (type) {
+                    R.layout.feed_list_load_state -> 2
+                    else -> 1
+                }
+            }
         }
     }
 }

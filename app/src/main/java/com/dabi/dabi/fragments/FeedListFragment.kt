@@ -93,8 +93,11 @@ class FeedListFragment : Fragment() {
     ): View {
         binding = FragmentFeedListBinding.inflate(inflater, container, false)
         swipeLayout = binding.swiperefresh
-        container?.let {
-            layoutFactory = DefaultFeedListLayoutFactory(it.context)
+        container?.let { it ->
+            layoutFactory =
+                DefaultFeedListLayoutFactory(
+                    it.context,
+                    { position -> feedListAdapter.getItemViewType(position) })
             bindList(binding = binding)
             childFragmentManager.beginTransaction()
                 .add(R.id.fragment_container_view, EmptyFragment())
@@ -111,7 +114,7 @@ class FeedListFragment : Fragment() {
                 super.onScrollStateChanged(recyclerView, newState)
                 viewModel.setScrollState(newState)
 
-                when(newState){
+                when (newState) {
                     RecyclerView.SCROLL_STATE_IDLE -> valueAnimator.start()
                     RecyclerView.SCROLL_STATE_DRAGGING -> valueAnimator.reverse()
                 }

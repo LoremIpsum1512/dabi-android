@@ -4,8 +4,6 @@ import android.R.attr
 import android.animation.ValueAnimator
 import android.view.View
 import android.widget.ImageView
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.dabi.dabi.adapters.FeedClickEvent
 import com.dabi.dabi.data.Feed

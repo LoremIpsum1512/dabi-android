@@ -12,7 +12,8 @@ class FeedListLoadStateAdapter(var retry: () -> Unit) :
     class ViewHolder(private var binding: FeedListLoadStateBinding, private var retry: () -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
         init {
-            binding.placeholder.adapter = FeedListPlaceholderAdapter(Array(6) { i -> i })
+            binding.placeholder.adapter = FeedListPlaceholderAdapter(Array(12) { i -> i })
+            binding.placeholder.isVerticalScrollBarEnabled = false
         }
 
         fun bind(loadState: LoadState) {
@@ -21,6 +22,8 @@ class FeedListLoadStateAdapter(var retry: () -> Unit) :
             binding.retryBtn.setOnClickListener { retry() }
         }
     }
+
+
 
     override fun onCreateViewHolder(parent: ViewGroup, loadState: LoadState): ViewHolder {
         val binding = FeedListLoadStateBinding.inflate(

@@ -21,8 +21,6 @@ class FeedRepository @Inject constructor(
         ) {
             FeedPagingSource(feedService, query)
         }.flow
-
-
     }
 
 }

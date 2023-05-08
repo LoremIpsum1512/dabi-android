@@ -43,13 +43,10 @@ class FeedListAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        val item = try {
-            getItem(position)
-        } catch (e: java.lang.IndexOutOfBoundsException) {
-            null
+        if (position == itemCount) {
+            return R.layout.feed_list_load_state
         }
-
-        return when (item) {
+        return when (getItem(position)) {
             is FeedUIModel.ImageItem -> R.layout.feed_list_item
             else -> throw UnsupportedOperationException("Unknown view")
         }
@@ -68,7 +65,7 @@ class FeedListAdapter(
 //                val layoutParams = binding.root.layoutParams
 //                layoutParams.height = (parent.height * 1).toInt()
 //                binding.root.layoutParams = layoutParams
-                FeedItemViewHolder(binding, clickEvent,valueAnimator)
+                FeedItemViewHolder(binding, clickEvent, valueAnimator)
             }
 //            R.layout.fragment_home_feed_filters -> {
 //                val binding = FragmentHomeHeaderBinding.inflate(
